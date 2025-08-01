@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing.tuners_tests.automatic;
+package org.firstinspires.ftc.teamcode.CodeBTC.PedroStuff.TunersTests.Automatic;
 
 import static com.pedropathing.follower.FollowerConstants.leftFrontMotorName;
 import static com.pedropathing.follower.FollowerConstants.leftRearMotorName;
@@ -13,7 +13,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -29,8 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
+import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
 
 /**
  * This is the LateralZeroPowerAccelerationTuner autonomous follower OpMode. This runs the robot
@@ -76,8 +74,8 @@ public class LateralZeroPowerAccelerationTuner extends OpMode {
      */
     @Override
     public void init() {
-Constants.setConstants(FConstants.class, LConstants.class);
-        poseUpdater = new PoseUpdater(hardwareMap, FConstants.class, LConstants.class);
+com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.class);
+        poseUpdater = new PoseUpdater(hardwareMap, Constants.FConstants.class, Constants.class);
 
         leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
         leftRear = hardwareMap.get(DcMotorEx.class, leftRearMotorName);
