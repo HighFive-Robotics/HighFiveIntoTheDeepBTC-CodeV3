@@ -7,20 +7,20 @@ import com.pedropathing.localization.constants.*;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+@SuppressWarnings("All")
 public class Constants {
     static {
-        ThreeWheelConstants.forwardTicksToInches = .001989436789;
-        ThreeWheelConstants.strafeTicksToInches = .001989436789;
-        ThreeWheelConstants.turnTicksToInches = .001989436789;
-        ThreeWheelConstants.leftY = 1;
-        ThreeWheelConstants.rightY = -1;
-        ThreeWheelConstants.strafeX = -2.5;
-        ThreeWheelConstants.leftEncoder_HardwareMapName = "leftFront";
-        ThreeWheelConstants.rightEncoder_HardwareMapName = "rightRear";
-        ThreeWheelConstants.strafeEncoder_HardwareMapName = "rightFront";
-        ThreeWheelConstants.leftEncoderDirection = Encoder.REVERSE;
-        ThreeWheelConstants.rightEncoderDirection = Encoder.REVERSE;
-        ThreeWheelConstants.strafeEncoderDirection = Encoder.FORWARD;
+        PinpointConstants.forwardY = 30.0;
+        PinpointConstants.strafeX = -5.0;
+        PinpointConstants.distanceUnit = DistanceUnit.MM;
+        PinpointConstants.hardwareMapName = "odo";
+        PinpointConstants.useYawScalar = false;
+        PinpointConstants.useCustomEncoderResolution = false;
+        PinpointConstants.encoderResolution = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD;
+        PinpointConstants.forwardEncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+        PinpointConstants.strafeEncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+
     }
 
     @Config
@@ -55,12 +55,12 @@ public class Constants {
 
     public static class FConstants {
         static {
-            FollowerConstants.localizers = Localizers.THREE_WHEEL;
+            FollowerConstants.localizers = Localizers.PINPOINT;
 
-            FollowerConstants.leftFrontMotorName = "leftFront";
-            FollowerConstants.leftRearMotorName = "leftRear";
-            FollowerConstants.rightFrontMotorName = "rightFront";
-            FollowerConstants.rightRearMotorName = "rightRear";
+            FollowerConstants.leftFrontMotorName = DeviceNames.leftFrontMotorName;
+            FollowerConstants.leftRearMotorName = DeviceNames.leftBackMotorName;
+            FollowerConstants.rightFrontMotorName = DeviceNames.rightFrontMotorName;
+            FollowerConstants.rightRearMotorName = DeviceNames.rightBackMotorName;
 
             FollowerConstants.leftFrontMotorDirection = DcMotorSimple.Direction.REVERSE;
             FollowerConstants.leftRearMotorDirection = DcMotorSimple.Direction.REVERSE;
