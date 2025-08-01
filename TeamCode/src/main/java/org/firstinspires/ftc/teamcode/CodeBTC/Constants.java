@@ -23,36 +23,6 @@ public class Constants {
 
     }
 
-    @Config
-    public static class DeviceNames {
-        public static String leftFrontMotorName = "LFM";
-        public static String leftBackMotorName = "LBM";
-        public static String rightFrontMotorName = "RFM";
-        public static String rightBackMotorName = "RBM";
-        public static String clawServoName = "C";
-        public static String armOuttakeServoName = "AO";
-        public static String armOuttakeAnalogInputName = "AAO";
-        public static String wristOuttakeServoName = "WO";
-        public static String wristOuttakeAnalogInputName = "AWO";
-        public static String linkageOuttakeAnalogInputName = "ALO";
-        public static String linkageOuttakeServoName = "LO";
-        public static String intakeActiveServoName = "I";
-        public static String intakeActiveSensorName = "IS";
-        public static String wristIntakeServoName = "WI";
-        public static String wristIntakeAnalogInputName = "AWI";
-        public static String armIntakeServoName = "AI";
-        public static String armIntakeAnalogInputName = "AAI";
-        public static String liftMotorLeftName = "LML";
-        public static String liftMotorRightName = "LMR";
-        public static String linearSlidesAnalogInputName = "ALS";
-        public static String linkageServoLeftName = "LSL";
-        public static String linkageServoRightName = "LSR";
-        public static String climbMotorLeftName = "ASCL";
-        public static String climbMotorRightName = "ASCR";
-        public static String led1Name = "L1";
-        public static String led2Name = "L2";
-    }
-
     public static class FConstants {
         static {
             FollowerConstants.localizers = Localizers.PINPOINT;
@@ -96,6 +66,37 @@ public class Constants {
             FollowerConstants.pathEndTranslationalConstraint = 0.1;
             FollowerConstants.pathEndHeadingConstraint = 0.007;
         }
+    }
+
+    @Config
+    public static class DeviceNames {
+        public static String leftFrontMotorName = "LFM";
+        public static String leftBackMotorName = "LBM";
+        public static String rightFrontMotorName = "RFM";
+        public static String rightBackMotorName = "RBM";
+        public static String clawServoName = "C";
+        public static String armOuttakeLeftServoName = "AOL";
+        public static String armOuttakeRightServoName = "AOR";
+        public static String armOuttakeAnalogInputName = "AAO";
+        public static String wristOuttakeServoName = "WO";
+        public static String wristOuttakeAnalogInputName = "AWO";
+        public static String linkageOuttakeAnalogInputName = "ALO";
+        public static String linkageOuttakeServoName = "LO";
+        public static String intakeActiveServoName = "I";
+        public static String intakeActiveSensorName = "IS";
+        public static String wristIntakeServoName = "WI";
+        public static String wristIntakeAnalogInputName = "AWI";
+        public static String armIntakeServoName = "AI";
+        public static String armIntakeAnalogInputName = "AAI";
+        public static String liftMotorLeftName = "LML";
+        public static String liftMotorRightName = "LMR";
+        public static String linearSlidesAnalogInputName = "ALS";
+        public static String linkageServoLeftName = "LSL";
+        public static String linkageServoRightName = "LSR";
+        public static String climbMotorLeftName = "ASCL";
+        public static String climbMotorRightName = "ASCR";
+        public static String led1Name = "L1";
+        public static String led2Name = "L2";
     }
 
     @Config
@@ -172,7 +173,7 @@ public class Constants {
     @Config
     public static class ClawPositions {
         public static double clawClosePose = 0.0;
-        public static double clawVeryClosePose = 0.05;
+        public static double clawSemiClosePose = 0.05;
         public static double clawOpenPose = 0.6;
     }
 

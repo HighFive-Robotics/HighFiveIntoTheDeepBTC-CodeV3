@@ -15,7 +15,7 @@
  * OR OTHER LIABILITIES THAT MAY ARISE FROM THE USE OF THE SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.CodeBTC.Hardware;
+package org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -24,7 +24,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.CodeBTC.Algorithms.AsymmetricMotionProfiler;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Algorithms.AsymmetricMotionProfiler;
 
 
 public class HighServo {
@@ -69,12 +69,12 @@ public class HighServo {
      * @param servo           gives the servo we will work with
      * @param runMode         gives the runMode ( MotionProfiler or Standard )
      * @param initialPosition gives the init position of the servo
-     * @param isAutonomous    knows if the servo should init or not
+     * @param isAuto    knows if the servo should init or not
      */
-    public HighServo(Servo servo, RunMode runMode, double initialPosition, boolean isAutonomous) {
+    public HighServo(Servo servo, RunMode runMode, double initialPosition, boolean isAuto) {
         this.servo = servo;
         this.runMode = runMode;
-        setInitialPosition(initialPosition, isAutonomous);
+        setInitialPosition(initialPosition, isAuto);
         if (runMode == RunMode.MotionProfiler) {
             motionProfiler.setMotion(initialPosition, initialPosition);
         }
@@ -90,14 +90,14 @@ public class HighServo {
      *                        setAnalogInputCoefficients();
      * @param runMode         gives the runMode
      * @param initialPosition gives the init position of the servo
-     * @param isAutonomous    knows if the servo should init or not
+     * @param isAuto    knows if the servo should init or not
      */
-    public HighServo(Servo servo, AnalogInput analogInput, RunMode runMode, double initialPosition, boolean isAutonomous) {
+    public HighServo(Servo servo, AnalogInput analogInput, RunMode runMode, double initialPosition, boolean isAuto) {
         this.servo = servo;
         this.analogInput = analogInput;
         useAnalogInput = true;
         this.runMode = runMode;
-        setInitialPosition(initialPosition, isAutonomous);
+        setInitialPosition(initialPosition, isAuto);
         if (runMode == RunMode.MotionProfiler) {
             motionProfiler.setMotion(initialPosition, initialPosition);
         }

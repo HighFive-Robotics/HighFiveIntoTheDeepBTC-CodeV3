@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.CodeBTC.Algorithms;
+package org.firstinspires.ftc.teamcode.CodeBTC.Core.Algorithms;
 
 public class SquidController {
 

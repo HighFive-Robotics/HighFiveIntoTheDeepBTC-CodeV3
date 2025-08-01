@@ -15,7 +15,7 @@
  * OR OTHER LIABILITIES THAT MAY ARISE FROM THE USE OF THE SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.CodeBTC.Hardware;
+package org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -26,7 +26,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
-import org.firstinspires.ftc.teamcode.CodeBTC.Algorithms.SquidController;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Algorithms.SquidController;
 
 public class HighMotor {
 
