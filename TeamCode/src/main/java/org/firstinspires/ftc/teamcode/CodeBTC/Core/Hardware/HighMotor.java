@@ -46,8 +46,8 @@ public class HighMotor {
     public RunMode runMode;
     public FeedForwardType feedForwardType;
     public DcMotorEx motor;
-    private final PIDFController pidfController = new PIDFController(0,0,0,0);
-    private final SquidController squidController = new SquidController(0,0,0,0);
+    public final PIDFController pidfController = new PIDFController(0,0,0,0);
+    public final SquidController squidController = new SquidController(0,0,0,0);
     private double lastPower = -2, power;
     private double multiplier = 1.0;
     private final double epsilon = 1e-5;
@@ -175,6 +175,29 @@ public class HighMotor {
         setReverseMotor(reverseMotor);
         setUseEncoder(useEncoder);
         setReverseEncoder(reverseEncoder);
+    }
+
+    /**
+     * wow
+     * @param runMode yes
+     */
+    public void setRunMode(RunMode runMode){
+        this.runMode = runMode;
+    }
+
+    /**
+     * wow
+     */
+    public RunMode getRunMode(){
+        return runMode;
+    }
+
+    /**
+     * This method resets the motor
+     */
+    public void resetMotor(){
+        this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**
@@ -511,6 +534,42 @@ public class HighMotor {
         this.feedForwardType = feedForwardType;
         this.initialAngle = initialAngle;
         this.ticksPerDegree = ticksPerDegree;
+        pidfController.setPIDF(kP, kI, kD, 0);
+    }
+
+    /**
+     * Sets the PID coefficients (kP, kI, kD) along with feedforward gain (kF), the feed forward type(Arm or Lift),
+     * initial angle, ticks per degree and the maximum power our PID controller is allowed to apply
+     *
+     *
+     * @param kP the proportional gain
+     * @param kI the integral gain
+     * @param kD the derivative gain
+     * @param kF the feedforward gain
+     * @param feedForwardType the feedforward type(Arm or Lift)
+     */
+    public void setPIDCoefficients(double kP, double kI, double kD, double kF, FeedForwardType feedForwardType) {
+        this.kF = kF;
+        this.feedForwardType = feedForwardType;
+        pidfController.setPIDF(kP, kI, kD, 0);
+    }
+
+    /**
+     * Sets the PID coefficients (kP, kI, kD) along with feedforward gain (kF), the feed forward type(Arm or Lift),
+     * initial angle, ticks per degree and the maximum power our PID controller is allowed to apply
+     *
+     *
+     * @param kP the proportional gain
+     * @param kI the integral gain
+     * @param kD the derivative gain
+     * @param kF the feedforward gain
+     * @param feedForwardType the feedforward type(Arm or Lift)
+     * @param maxPIDPower the value of the maximum power our PID controller is allowed to apply
+     */
+    public void setPIDCoefficients(double kP, double kI, double kD, double kF, FeedForwardType feedForwardType, double maxPIDPower) {
+        this.kF = kF;
+        this.feedForwardType = feedForwardType;
+        this.maxPIDPower = Math.abs(maxPIDPower);
         pidfController.setPIDF(kP, kI, kD, 0);
     }
 

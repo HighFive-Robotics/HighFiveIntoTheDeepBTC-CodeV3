@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware.HighServo;
 public class Claw implements HighModule {
 
     public HighServo claw;
+    public States state = States.None;
     private double target;
 
     public enum States{
@@ -22,8 +23,6 @@ public class Claw implements HighModule {
         Open,
         None
     }
-
-    public States state = States.None;
 
     /**
      *

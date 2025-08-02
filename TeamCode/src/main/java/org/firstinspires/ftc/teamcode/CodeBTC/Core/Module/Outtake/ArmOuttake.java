@@ -25,6 +25,7 @@ import org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware.HighServo;
 public class ArmOuttake implements HighModule {
 
     public HighServo armServoLeft , armServoRight;
+    public States state = States.None;
     private final double [] motionProfileCoefficientsGoingDown = {6, 6, 2};
     private final double [] motionProfileCoefficientsGoingUp = {5, 5, 3};
     private double target;
@@ -39,8 +40,6 @@ public class ArmOuttake implements HighModule {
         WaitScoreSample,
         None
     }
-
-    public States state = States.None;
 
     public ArmOuttake(HardwareMap hardwareMap, double initPosition ,boolean isAutonomous) {
         armServoLeft = new HighServo(hardwareMap.get(Servo.class , armOuttakeLeftServoName), hardwareMap.get(AnalogInput.class , armOuttakeAnalogInputName) ,HighServo.RunMode.MotionProfiler , initPosition , isAutonomous);
@@ -150,6 +149,10 @@ public class ArmOuttake implements HighModule {
 
     public double getVoltage() {
         return armServoLeft.getVoltage();
+    }
+
+    public States getState() {
+        return state;
     }
 
     @Override

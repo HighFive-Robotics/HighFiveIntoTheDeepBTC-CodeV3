@@ -11,7 +11,7 @@ public class AsymmetricMotionProfiler {
     public double initialPosition, finalPosition;
     ElapsedTime timer = new ElapsedTime();
 
-    private double position, velocity, signedVelocity;
+    //private double position, velocity, signedVelocity;
 
     public AsymmetricMotionProfiler(double maxVelocity, double acceleration, double deceleration) {
         this.maxVelocity = maxVelocity;
