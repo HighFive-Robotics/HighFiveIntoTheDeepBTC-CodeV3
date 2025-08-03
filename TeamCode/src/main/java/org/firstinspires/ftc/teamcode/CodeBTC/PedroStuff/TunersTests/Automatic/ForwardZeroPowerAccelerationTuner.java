@@ -74,8 +74,8 @@ public class ForwardZeroPowerAccelerationTuner extends OpMode {
      */
     @Override
     public void init() {
-com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.class);
-        poseUpdater = new PoseUpdater(hardwareMap, Constants.FConstants.class, Constants.class);
+com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.LConstants.class);
+        poseUpdater = new PoseUpdater(hardwareMap, Constants.FConstants.class, Constants.LConstants.class);
 
         leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
         leftRear = hardwareMap.get(DcMotorEx.class, leftRearMotorName);

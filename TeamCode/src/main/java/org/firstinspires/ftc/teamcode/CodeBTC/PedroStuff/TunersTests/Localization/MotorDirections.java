@@ -36,7 +36,7 @@ public class MotorDirections extends OpMode {
 
     @Override
     public void init() {
-        com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.class);
+        com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.LConstants.class);
 
         leftFront = hardwareMap.get(DcMotorEx.class, leftFrontMotorName);
         leftRear = hardwareMap.get(DcMotorEx.class, leftRearMotorName);
@@ -66,7 +66,7 @@ public class MotorDirections extends OpMode {
 
     @Override
     public void loop() {
-        com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.class);
+        com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.LConstants.class);
         leftFront.setDirection(leftFrontMotorDirection);
         leftRear.setDirection(leftRearMotorDirection);
         rightFront.setDirection(rightFrontMotorDirection);

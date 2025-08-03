@@ -263,7 +263,7 @@ public class ExampleBucketAuto extends OpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
 
-        follower = new Follower(hardwareMap, Constants.FConstants.class, Constants.class);
+        follower = new Follower(hardwareMap, Constants.FConstants.class, Constants.LConstants.class);
         follower.setStartingPose(startPose);
         buildPaths();
     }

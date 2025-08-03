@@ -54,8 +54,8 @@ public class LocalizationTest extends OpMode {
      */
     @Override
     public void init() {
-        com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.class);
-        poseUpdater = new PoseUpdater(hardwareMap, Constants.FConstants.class, Constants.class);
+        com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.LConstants.class);
+        poseUpdater = new PoseUpdater(hardwareMap, Constants.FConstants.class, Constants.LConstants.class);
 
         dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
 
