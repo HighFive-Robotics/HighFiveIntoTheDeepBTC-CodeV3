@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake;
 
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.ClawPositions.clawClosePose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.ClawPositions.clawOpenPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.ClawPositions.clawSemiClosePose;
+
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.clawServoName;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Claw.clawClosePose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Claw.clawOpenPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Claw.clawSemiClosePose;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;

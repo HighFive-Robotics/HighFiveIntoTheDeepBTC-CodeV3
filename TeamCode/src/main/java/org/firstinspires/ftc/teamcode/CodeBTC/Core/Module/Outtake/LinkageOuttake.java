@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake;
 
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.linkageOuttakeAnalogInputName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.linkageOuttakeServoName;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakePositions.maxPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakePositions.minPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakePositions.slidesOuttakeAuxPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakePositions.slidesOuttakeExtendedPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakePositions.slidesOuttakeRetractedPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakeVoltages.slidesOuttakeMaxVoltage;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LinkageOuttakeVoltages.slidesOuttakeMinVoltage;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.LinkageOuttakeVoltages.slidesOuttakeMaxVoltage;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.LinkageOuttakeVoltages.slidesOuttakeMinVoltage;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.maxPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.minPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.slidesOuttakeAuxPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.slidesOuttakeExtendedPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.LinkageOuttake.slidesOuttakeRetractedPose;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;

@@ -1,18 +1,17 @@
-package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake;
+package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake;
 
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.wristOuttakeAnalogInputName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.wristOuttakeServoName;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristCollectPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristCollectSpecificOnePose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristPushBadColor;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristSpecimenWait;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristSpitPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristWaitCollectSpecificOnePose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.WristOuttakeAnalogInputVoltage.wristOuttakeMaxVoltage;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.WristOuttakeAnalogInputVoltage.wristOuttakeMinVoltage;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.maxPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.minPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.waitToComeForTransfer;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristCollectSpecimenPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristCollectSpecimenSpecialPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristCollectSpecimenSpecialSpecialPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristSamplePose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristSampleScoreSpecial;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristScoreSpecimenPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristTransferPose;
 
 
@@ -23,21 +22,20 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware.HighModule;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware.HighServo;
 
-public class WristOuttake implements HighModule {
+public class WristIntake implements HighModule {
 
     HighServo wristServo;
     public States state = States.None;
     private double target;
 
-    public enum States {
-        CollectSpecimen,
-        CollectSpecialSpecimen,
-        CollectSpecialSpecialSpecimen,
-        ScoreSpecimen,
-        Sample,
+    public enum States{
+        CollectSpecificOne,
+        WaitCollectSpecificOne,
+        Collect,
+        SpecimenWait,
+        Spit,
         Transfer,
-        WaitToComeToTransfer,
-        ScoreSampleSpecial,
+        PushBadColor,
         None
     }
 
@@ -47,77 +45,62 @@ public class WristOuttake implements HighModule {
      * @param initPosition
      * @param isAuto
      */
-    public WristOuttake(HardwareMap hardwareMap,double initPosition ,boolean isAuto) {
+    public WristIntake(HardwareMap hardwareMap,double initPosition ,boolean isAuto) {
         wristServo = new HighServo(hardwareMap.get(Servo.class, wristOuttakeServoName), hardwareMap.get(AnalogInput.class, wristOuttakeAnalogInputName) ,HighServo.RunMode.Standard,initPosition , isAuto);
         wristServo.setAnalogInputCoefficients(0.025, wristOuttakeMinVoltage, wristOuttakeMaxVoltage, minPose, maxPose);
         target = initPosition;
     }
 
-    /**
-     *
-     * @param state
-     */
     public void setState(States state) {
-        this.state = state;
-        switch (state) {
-            case CollectSpecimen:
-                setTarget(wristCollectSpecimenPose);
+        this.state=state;
+        switch (state){
+            case CollectSpecificOne:
+                setTarget(wristCollectSpecificOnePose);
                 break;
-            case CollectSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialPose);
+            case WaitCollectSpecificOne:
+                setTarget(wristWaitCollectSpecificOnePose);
                 break;
-            case CollectSpecialSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialSpecialPose);
+            case Collect:
+                setTarget(wristCollectPose);
                 break;
-            case Sample:
-                setTarget(wristSamplePose);
+            case SpecimenWait:
+                setTarget(wristSpecimenWait);
+                break;
+            case Spit:
+                setTarget(wristSpitPose);
                 break;
             case Transfer:
                 setTarget(wristTransferPose);
                 break;
-            case ScoreSpecimen:
-                setTarget(wristScoreSpecimenPose);
-                break;
-            case WaitToComeToTransfer:
-                setTarget(waitToComeForTransfer);
-                break;
-            case ScoreSampleSpecial:
-                setTarget(wristSampleScoreSpecial);
+            case PushBadColor:
+                setTarget(wristPushBadColor);
                 break;
         }
     }
 
-    /**
-     *
-     * @param state
-     * @param time
-     */
     public void setState(States state, double time) {
-        this.state = state;
-        switch (state) {
-            case CollectSpecimen:
-                setTarget(wristCollectSpecimenPose, time);
+        this.state=state;
+        switch (state){
+            case CollectSpecificOne:
+                setTarget(wristCollectSpecificOnePose, time);
                 break;
-            case CollectSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialPose, time);
+            case WaitCollectSpecificOne:
+                setTarget(wristWaitCollectSpecificOnePose, time);
                 break;
-            case CollectSpecialSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialSpecialPose, time);
+            case Collect:
+                setTarget(wristCollectPose, time);
                 break;
-            case Sample:
-                setTarget(wristSamplePose, time);
+            case SpecimenWait:
+                setTarget(wristSpecimenWait, time);
+                break;
+            case Spit:
+                setTarget(wristSpitPose, time);
                 break;
             case Transfer:
                 setTarget(wristTransferPose, time);
                 break;
-            case ScoreSpecimen:
-                setTarget(wristScoreSpecimenPose, time);
-                break;
-            case WaitToComeToTransfer:
-                setTarget(waitToComeForTransfer, time);
-                break;
-            case ScoreSampleSpecial:
-                setTarget(wristSampleScoreSpecial, time);
+            case PushBadColor:
+                setTarget(wristPushBadColor, time);
                 break;
         }
     }

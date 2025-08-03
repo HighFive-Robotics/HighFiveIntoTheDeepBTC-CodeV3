@@ -2,16 +2,16 @@ package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake;
 
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.liftMotorLeftName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.liftMotorRightName;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftCorrectionCoefficients.gravityGain;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftCorrectionCoefficients.liftPIDCoefficients_goingDown;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftCorrectionCoefficients.liftPIDCoefficients_goingUp;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftCorrectionCoefficients.maxCurrentDrawn;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftPositions.liftCollect;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftPositions.liftHighBasket;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftPositions.liftHighBasketSpecial;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftPositions.liftHighChamber;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftPositions.liftLowBasket;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.LiftPositions.liftLowChamber;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.LiftPositions.liftCollect;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.LiftPositions.liftHighBasket;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.LiftPositions.liftHighBasketSpecial;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.LiftPositions.liftHighChamber;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.LiftPositions.liftLowBasket;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.LiftPositions.liftLowChamber;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.gravityGain;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.liftPIDCoefficients_goingDown;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.liftPIDCoefficients_goingUp;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.Lift.maxCurrentDrawn;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.CodeBTC.Core.Hardware.HighMotor;
 
 public class Lift implements HighModuleSimple {
 
-    public HighMotor leftMotor, rightMotor;
+    public HighMotor leftLiftMotor, rightLiftMotor;
     boolean shouldResetEnc = false;
     private double power = 0;
     private boolean newTarget = false;
@@ -40,11 +40,11 @@ public class Lift implements HighModuleSimple {
     }
 
     public Lift(HardwareMap hardwareMap){
-        leftMotor = new HighMotor(hardwareMap.get(DcMotorEx.class, liftMotorLeftName), HighMotor.RunMode.Standard, false, true);
-        rightMotor = new HighMotor(hardwareMap.get(DcMotorEx.class, liftMotorRightName), HighMotor.RunMode.PID, false, true, true, false);
-        rightMotor.setPIDCoefficients(liftPIDCoefficients_goingUp.p, liftPIDCoefficients_goingUp.i, liftPIDCoefficients_goingUp.d, gravityGain, HighMotor.FeedForwardType.Lift);
-        rightMotor.setTarget(0);
-        rightMotor.setTolerance(20);
+        leftLiftMotor = new HighMotor(hardwareMap.get(DcMotorEx.class, liftMotorLeftName), HighMotor.RunMode.Standard, false, true);
+        rightLiftMotor = new HighMotor(hardwareMap.get(DcMotorEx.class, liftMotorRightName), HighMotor.RunMode.PID, false, true, true, false);
+        rightLiftMotor.setPIDCoefficients(liftPIDCoefficients_goingUp.p, liftPIDCoefficients_goingUp.i, liftPIDCoefficients_goingUp.d, gravityGain, HighMotor.FeedForwardType.Lift);
+        rightLiftMotor.setTarget(0);
+        rightLiftMotor.setTolerance(20);
     }
 
     public void setState(States state) {
@@ -54,27 +54,27 @@ public class Lift implements HighModuleSimple {
             case Collect:
                 power = -0.9;
                 motorsSetPower(power);
-                rightMotor.setRunMode(HighMotor.RunMode.Standard);
-                rightMotor.setTarget(liftCollect);
+                rightLiftMotor.setRunMode(HighMotor.RunMode.Standard);
+                rightLiftMotor.setTarget(liftCollect);
                 break;
             case LowBasket:
-                rightMotor.setTarget(liftLowBasket);
+                rightLiftMotor.setTarget(liftLowBasket);
                 break;
             case HighBasket:
-                rightMotor.setTarget(liftHighBasket);
+                rightLiftMotor.setTarget(liftHighBasket);
                 break;
             case HighChamber:
-                rightMotor.setTarget(liftHighChamber);
+                rightLiftMotor.setTarget(liftHighChamber);
                 break;
             case LowChamber:
-                rightMotor.setTarget(liftLowChamber);
+                rightLiftMotor.setTarget(liftLowChamber);
                 break;
             case HighBasketSpecial:
-                rightMotor.setTarget(liftHighBasketSpecial);
+                rightLiftMotor.setTarget(liftHighBasketSpecial);
                 break;
             case Reset:
                 power = -1;
-                rightMotor.setRunMode(HighMotor.RunMode.Standard);
+                rightLiftMotor.setRunMode(HighMotor.RunMode.Standard);
                 motorsSetPower(power);
                 break;
         }
@@ -82,27 +82,27 @@ public class Lift implements HighModuleSimple {
 
     public void resetEnc() {
         motorsSetPower(0);
-        rightMotor.setTarget(0);
-        leftMotor.resetMotor();
-        rightMotor.resetMotor();
-        rightMotor.resetPID();
+        rightLiftMotor.setTarget(0);
+        leftLiftMotor.resetMotor();
+        rightLiftMotor.resetMotor();
+        rightLiftMotor.resetPID();
         state = States.Collect;
     }
 
     public void setTarget(double target) {
-        rightMotor.setTarget(target);
+        rightLiftMotor.setTarget(target);
     }
 
     public boolean atTarget() {
-        return rightMotor.atTarget();
+        return rightLiftMotor.atTarget();
     }
 
     public double getTarget() {
-        return rightMotor.getTarget();
+        return rightLiftMotor.getTarget();
     }
 
     public double getPower(double currentPosition) {
-        return rightMotor.getPower();
+        return rightLiftMotor.getPower();
     }
 
     public States getState() {
@@ -112,32 +112,32 @@ public class Lift implements HighModuleSimple {
     @Override
     public void update() {
         if (state != States.Reset) {//todo make voltage work
-            if (rightMotor.getCurrentDrawn() * (12.0 / 12.0) >= (maxCurrentDrawn) && rightMotor.getCurrentPosition() <= 20 && rightMotor.getRunMode() == HighMotor.RunMode.Standard) {
+            if (rightLiftMotor.getCurrentDrawn() * (12.0 / 12.0) >= (maxCurrentDrawn) && rightLiftMotor.getCurrentPosition() <= 20 && rightLiftMotor.getRunMode() == HighMotor.RunMode.Standard) {
                 power = 0;
                 motorsSetPower(power);
                 shouldResetEnc = true;
                 timerToResetEnc.reset();
             }
-            if (timerToResetEnc.milliseconds() >= 100 && shouldResetEnc && rightMotor.getCurrentDrawn() <= 2) {
+            if (timerToResetEnc.milliseconds() >= 100 && shouldResetEnc && rightLiftMotor.getCurrentDrawn() <= 2) {
                 shouldResetEnc = false;
-                rightMotor.setPIDCoefficients(liftPIDCoefficients_goingUp.p, liftPIDCoefficients_goingUp.i, liftPIDCoefficients_goingUp.d, gravityGain, HighMotor.FeedForwardType.Lift,1);
+                rightLiftMotor.setPIDCoefficients(liftPIDCoefficients_goingUp.p, liftPIDCoefficients_goingUp.i, liftPIDCoefficients_goingUp.d, gravityGain, HighMotor.FeedForwardType.Lift,1);
                 resetEnc();
             }
             if (newTarget) {
-                if (rightMotor.getCurrentPosition() > getTarget())
-                    rightMotor.setPIDCoefficients(liftPIDCoefficients_goingDown.p, liftPIDCoefficients_goingDown.i, liftPIDCoefficients_goingDown.d, gravityGain, HighMotor.FeedForwardType.Lift,1);
+                if (rightLiftMotor.getCurrentPosition() > getTarget())
+                    rightLiftMotor.setPIDCoefficients(liftPIDCoefficients_goingDown.p, liftPIDCoefficients_goingDown.i, liftPIDCoefficients_goingDown.d, gravityGain, HighMotor.FeedForwardType.Lift,1);
                 else
-                    rightMotor.setPIDCoefficients(liftPIDCoefficients_goingUp.p, liftPIDCoefficients_goingUp.i, liftPIDCoefficients_goingUp.d, gravityGain, HighMotor.FeedForwardType.Lift,1);
+                    rightLiftMotor.setPIDCoefficients(liftPIDCoefficients_goingUp.p, liftPIDCoefficients_goingUp.i, liftPIDCoefficients_goingUp.d, gravityGain, HighMotor.FeedForwardType.Lift,1);
             }
-            if (rightMotor.getRunMode() == HighMotor.RunMode.PID) {
-                power = rightMotor.getPower();
+            if (rightLiftMotor.getRunMode() == HighMotor.RunMode.PID) {
+                power = rightLiftMotor.getPower();
                 motorsSetPower(power);
             }
         }
     }
 
     public void motorsSetPower(double power){
-        leftMotor.setPower(power);
-        rightMotor.setPower(power);
+        leftLiftMotor.setPower(power);
+        rightLiftMotor.setPower(power);
     }
 }
