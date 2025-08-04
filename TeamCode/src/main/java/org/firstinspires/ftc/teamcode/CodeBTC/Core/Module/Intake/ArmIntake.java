@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake;
 
-
-
-
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.armIntakeAnalogInputName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.armIntakeServoName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.ArmIntake.ArmIntakeAnalogInputVoltage.armIntakeMaxVoltage;

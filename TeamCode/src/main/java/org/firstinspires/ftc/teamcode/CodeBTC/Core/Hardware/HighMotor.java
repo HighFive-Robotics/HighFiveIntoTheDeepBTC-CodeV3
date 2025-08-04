@@ -26,6 +26,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
+import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Algorithms.SquidController;
 
 public class HighMotor {
@@ -299,7 +300,7 @@ public class HighMotor {
     public void setPowerToOvercomeFriction(double power) {
         power = power * multiplier;
         power = Range.clip(power, -1.0, 1.0);
-        double coefficientPowerDistribution = minimumPowerToOvercomeFriction * (12.0 / 12.0); ///TODO
+        double coefficientPowerDistribution = minimumPowerToOvercomeFriction * (12.0 / Constants.Globals.voltage );
         power *= (1 - coefficientPowerDistribution);
         this.power = power + coefficientPowerDistribution * Math.signum(power);
     }

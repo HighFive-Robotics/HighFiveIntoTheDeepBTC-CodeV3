@@ -1,18 +1,20 @@
 package org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake;
 
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.wristIntakeAnalogInputName;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.wristIntakeServoName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.wristOuttakeAnalogInputName;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.wristOuttakeServoName;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.WristIntakeAnalogInputVoltage.wristIntakeMaxVoltage;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.WristIntakeAnalogInputVoltage.wristIntakeMinVoltage;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.maxPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.minPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristCollectPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristCollectSpecificOnePose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristPushBadColor;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristSpecimenWait;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristSpitPose;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristTransferPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.WristIntake.wristWaitCollectSpecificOnePose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.WristOuttakeAnalogInputVoltage.wristOuttakeMaxVoltage;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.WristOuttakeAnalogInputVoltage.wristOuttakeMinVoltage;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.maxPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.minPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristTransferPose;
 
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -46,8 +48,8 @@ public class WristIntake implements HighModule {
      * @param isAuto
      */
     public WristIntake(HardwareMap hardwareMap,double initPosition ,boolean isAuto) {
-        wristServo = new HighServo(hardwareMap.get(Servo.class, wristOuttakeServoName), hardwareMap.get(AnalogInput.class, wristOuttakeAnalogInputName) ,HighServo.RunMode.Standard,initPosition , isAuto);
-        wristServo.setAnalogInputCoefficients(0.025, wristOuttakeMinVoltage, wristOuttakeMaxVoltage, minPose, maxPose);
+        wristServo = new HighServo(hardwareMap.get(Servo.class, wristIntakeServoName), hardwareMap.get(AnalogInput.class, wristIntakeAnalogInputName) ,HighServo.RunMode.Standard,initPosition , isAuto);
+        wristServo.setAnalogInputCoefficients(0.025, wristIntakeMinVoltage, wristIntakeMaxVoltage, minPose, maxPose);
         target = initPosition;
     }
 

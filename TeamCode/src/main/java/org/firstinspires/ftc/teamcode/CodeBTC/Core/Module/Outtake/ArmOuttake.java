@@ -45,7 +45,6 @@ public class ArmOuttake implements HighModule {
     public ArmOuttake(HardwareMap hardwareMap, double initPosition , boolean isAuto) {
         leftArmOuttake = new HighServo(hardwareMap.get(Servo.class , armOuttakeLeftServoName), hardwareMap.get(AnalogInput.class , armOuttakeAnalogInputName) ,HighServo.RunMode.MotionProfiler , initPosition , isAuto);
         rightArmOuttake = new HighServo(hardwareMap.get(Servo.class , armOuttakeRightServoName),HighServo.RunMode.MotionProfiler , initPosition, isAuto);
-        setMotionCoefficients(motionProfileCoefficientsGoingUp);
         leftArmOuttake.setAnalogInputCoefficients(0.04 ,armOuttakeMinVoltage, armOuttakeMaxVoltage, minPose, maxPose);
         target = initPosition;
     }
@@ -54,32 +53,32 @@ public class ArmOuttake implements HighModule {
         this.state = state;
         switch (state) {
             case CollectSpecimen:
-                setTarget(armCollectSpecimenPose);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armCollectSpecimenPose);
                 break;
             case CollectSpecialSpecimen:
-                setTarget(armCollectSpecimenSpecialPose);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armCollectSpecimenSpecialPose);
                 break;
             case CollectSpecialSpecialSpecimen:
-                setTarget(armCollectSpecimenSpecialSpecialPose);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armCollectSpecimenSpecialSpecialPose);
                 break;
             case Transfer:
-                setTarget(armTransferPose);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armTransferPose);
                 break;
             case ScoreSpecimen:
-                setTarget(armScoreSpecimenPose);
                 setMotionCoefficients(motionProfileCoefficientsGoingUp);
+                setTarget(armScoreSpecimenPose);
                 break;
             case ScoreSample:
-                setTarget(armScoreSamplePose);
                 setMotionCoefficients(motionProfileCoefficientsGoingUp);
+                setTarget(armScoreSamplePose);
                 break;
             case WaitScoreSample:
-                setTarget(waitScorePose);
                 setMotionCoefficients(motionProfileCoefficientsGoingUp);
+                setTarget(waitScorePose);
                 break;
 
         }
@@ -89,32 +88,32 @@ public class ArmOuttake implements HighModule {
         this.state = state;
         switch (state) {
             case CollectSpecimen:
-                setTarget(armCollectSpecimenPose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armCollectSpecimenPose, time);
                 break;
             case CollectSpecialSpecimen:
-                setTarget(armCollectSpecimenSpecialPose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armCollectSpecimenSpecialPose, time);
                 break;
             case CollectSpecialSpecialSpecimen:
-                setTarget(armCollectSpecimenSpecialSpecialPose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armCollectSpecimenSpecialSpecialPose, time);
                 break;
             case Transfer:
-                setTarget(armTransferPose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
+                setTarget(armTransferPose, time);
                 break;
             case ScoreSpecimen:
-                setTarget(armScoreSpecimenPose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingUp);
+                setTarget(armScoreSpecimenPose, time);
                 break;
             case ScoreSample:
-                setTarget(armScoreSamplePose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingUp);
+                setTarget(armScoreSamplePose, time);
                 break;
             case WaitScoreSample:
-                setTarget(waitScorePose, time);
                 setMotionCoefficients(motionProfileCoefficientsGoingUp);
+                setTarget(waitScorePose, time);
                 break;
 
         }

@@ -36,10 +36,10 @@ public class MotorTest extends LinearOpMode {
                 Motor4.setPower(1);
             }
 
-            telemetry.addData("Motor 1(a de pe xbox): ", Motor1.getPower());
-            telemetry.addData("Motor 2(b de pe xbox): ", Motor2.getPower());
-            telemetry.addData("Motor 3(x de pe xbox): ", Motor3.getPower());
-            telemetry.addData("Motor 4(y de pe xbox): ", Motor4.getPower());
+            telemetry.addData("Motor 1(a on xbox): ", Motor1.getPower());
+            telemetry.addData("Motor 2(b on xbox): ", Motor2.getPower());
+            telemetry.addData("Motor 3(x on xbox): ", Motor3.getPower());
+            telemetry.addData("Motor 4(y on xbox): ", Motor4.getPower());
         }
     }
 }

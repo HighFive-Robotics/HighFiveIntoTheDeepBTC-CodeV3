@@ -29,12 +29,11 @@ public class AsymmetricMotionProfiler {
 
     public void setMotion(double initialPosition, double finalPosition){
         this.initialPosition = initialPosition;
+        this.finalPosition = finalPosition;
         double distance = Math.abs(finalPosition - initialPosition);
         if(distance == 0){
             return;
         }
-        this.initialPosition = initialPosition;
-        this.finalPosition = finalPosition;
         maxUsedVelocity = Math.min(maxVelocity, Math.sqrt((2 * distance * acceleration * deceleration) / (acceleration + deceleration)));
         T0 = maxUsedVelocity / acceleration;
         T2 = maxUsedVelocity / deceleration;

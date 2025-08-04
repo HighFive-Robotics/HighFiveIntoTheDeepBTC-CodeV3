@@ -113,7 +113,6 @@ public class HighServo {
      */
     private void setInitialPosition(double position, boolean isAutonomous) {
         targetPosition = position;
-        lastPosition = position;
         if (isAutonomous) {
             this.currentPosition = position;
             servo.setPosition(targetPosition);

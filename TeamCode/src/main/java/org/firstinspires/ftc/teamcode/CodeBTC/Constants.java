@@ -10,6 +10,11 @@ import com.qualcomm.robotcore.hardware.PIDCoefficients;
 @SuppressWarnings("All")
 public class Constants {
 
+    public static class Globals{
+        public static boolean isSampleAuto = false;
+        public static double voltage = 12.0;
+    }
+
     public static class LConstants {
         static {
             ThreeWheelConstants.forwardTicksToInches = .001989436789;
@@ -101,7 +106,7 @@ public class Constants {
         public static String climbMotorRightName = "ASCR";
         public static String led1Name = "L1";
         public static String led2Name = "L2";
-        public static String pinPointName = "odo";
+        public static String pinPointName = "pinpoint";
     }
 
     @Config
@@ -109,15 +114,15 @@ public class Constants {
 
         @Config
         public static class Lift {
-            public static PIDCoefficients liftPIDCoefficients_goingUp = new PIDCoefficients(0.01, 0, 0.00001);
+            public static PIDCoefficients liftPIDCoefficients_goingUp = new PIDCoefficients(0.004, 0, 0.00001);
             public static PIDCoefficients liftPIDCoefficients_goingDown = new PIDCoefficients(0.0012, 0, 0.00001);
-            public static double gravityGain = 0.12;
+            public static double gravityGain = 0.00035;
             public static double maxCurrentDrawn = 5;
 
             @Config
             public static class LiftPositions {
                 public static double liftLowChamber = 0, liftHighChamber = 510, liftHighBasketSpecial = 725;
-                public static double liftCollect = 0, liftLowBasket = 0, liftHighBasket = 730;
+                public static double liftCollect = 0, liftLowBasket = 0, liftHighBasket = 650;
             }
         }
 
@@ -148,8 +153,8 @@ public class Constants {
             public static double wristCollectSpecimenPose = 0.35; // 0.15
             public static double wristCollectSpecimenSpecialPose = 0.17; // 0.15
             public static double wristCollectSpecimenSpecialSpecialPose = 0; // 0.2
-            public static double wristScoreSpecimenPose = 0.2;// 0.25
-            public static double waitToComeForTransfer = 0; //0.1
+            public static double wristScoreSpecimenPose = 0.25;// 0.25
+            public static double waitToComeForTransfer = 0.1; //0.1
             public static double wristSampleScoreSpecial = 0; //1
             public static double wristWaitCollectSpecimenPose= 0;
             public static double minPose = 0.0;
@@ -164,12 +169,12 @@ public class Constants {
 
         @Config
         public static class LinkageOuttake {
-            public static double slidesOuttakeRetractedPose = 0; //0.2
-            public static double slidesOuttakeExtendedPose = 0.9; //0.95
-            public static double slidesOuttakeAuxPose = 0; //0.2
+            public static double slidesOuttakeRetractedPose = 0.1;
+            public static double slidesOuttakeExtendedPose = 0.9;
+            public static double slidesOuttakeAuxPose = 0;
             public static double slidesOuttakeSpecPose = 0;
-            public static double minPose = 0; //0.15
-            public static double maxPose = 0.9; //0.95
+            public static double minPose = 0;
+            public static double maxPose = 0.9;
 
             @Config
             public static class LinkageOuttakeVoltages {
@@ -268,7 +273,6 @@ public class Constants {
         Red,
         None
     }
-
 
 }
 

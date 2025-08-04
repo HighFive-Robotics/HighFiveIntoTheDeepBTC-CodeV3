@@ -47,16 +47,20 @@ public class LinearSlides implements HighModule {
         this.state = state;
         switch (state) {
             case Extended:
-                setTarget(slidesExtendedPose);
+                leftLinkageServo.setPosition(slidesExtendedPose);
+                rightLinkageServo.setPosition(slidesExtendedPose);
                 break;
             case Retracted:
-                setTarget(slidesRetractedPose);
+                leftLinkageServo.setPosition(slidesRetractedPose);
+                rightLinkageServo.setPosition(slidesRetractedPose);
                 break;
             case Aux:
-                setTarget(slidesAuxPose);
+                leftLinkageServo.setPosition(slidesAuxPose);
+                rightLinkageServo.setPosition(slidesAuxPose);
                 break;
             case AuxAuto:
-                setTarget(slidesAuxAutoPose);
+                leftLinkageServo.setPosition(slidesAuxAutoPose);
+                rightLinkageServo.setPosition(slidesAuxAutoPose);
                 break;
         }
     }
@@ -65,16 +69,20 @@ public class LinearSlides implements HighModule {
         this.state = state;
         switch (state) {
             case Extended:
-                setTarget(slidesExtendedPose, time);
+                leftLinkageServo.setPosition(slidesExtendedPose, time);
+                rightLinkageServo.setPosition(slidesExtendedPose);
                 break;
             case Retracted:
-                setTarget(slidesRetractedPose, time);
+                leftLinkageServo.setPosition(slidesRetractedPose, time);
+                rightLinkageServo.setPosition(slidesRetractedPose);
                 break;
             case Aux:
-                setTarget(slidesAuxPose, time);
+                leftLinkageServo.setPosition(slidesAuxPose, time);
+                rightLinkageServo.setPosition(slidesAuxPose);
                 break;
             case AuxAuto:
-                setTarget(slidesAuxAutoPose, time);
+                leftLinkageServo.setPosition(slidesAuxAutoPose, time);
+                rightLinkageServo.setPosition(slidesAuxAutoPose);
                 break;
         }
     }
