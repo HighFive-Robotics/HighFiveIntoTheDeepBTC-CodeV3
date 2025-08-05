@@ -34,9 +34,17 @@ public class Testing extends LinearOpMode {
         allianceColor= Constants.Color.Blue;
         robot = new Robot(hardwareMap,startPose,isAuto,allianceColor,telemetry);
         robot.drive.startTeleopDrive();
+        while(opModeInInit())
+        {
+            gamepad1.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
+            gamepad2.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
+        }
         waitForStart();
+
+        //gamepad2.setLedColor(132, 88, 164 , 999999999);
         while (opModeIsActive()){
-            if(gamepad1.b && time1.milliseconds() >= 450){
+
+            if(gamepad1.x && time1.milliseconds() >= 450){
                 robot.setAction(Robot.Actions.GoToCollectSpecimen);
                 time1.reset();
             }

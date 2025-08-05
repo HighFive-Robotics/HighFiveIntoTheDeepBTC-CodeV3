@@ -67,14 +67,13 @@ public class Robot implements HighModuleSimple {
         GoToScoreSpecimen,
         SpecimenWithIntakeUp,
         SpecimenWithIntakeDown,
-        OuttakeGoToTransferSample,
         IntakeGoToTransfer,
         IntakeGoToTransferSpecimen,
         StartCollecting,
         StartCollectingWithWait,
         StartCollectingWithExtension,
         StartCollectingSpecific,
-
+        OuttakeGoToTransferSample,
         TransferSample,
         CollectSampleFromPerimeter,
         None
@@ -140,7 +139,7 @@ public class Robot implements HighModuleSimple {
                 }
                 break;
             case OuttakeGoToTransferSample:
-                linkageOuttake.setState(LinkageOuttake.States.Retracted, 300);
+                linkageOuttake.setState(LinkageOuttake.States.Retracted, 150);
                 setOuttakeForTransfer = true;
             break;
             case IntakeGoToTransfer:
@@ -233,7 +232,7 @@ public class Robot implements HighModuleSimple {
         }
         if(goToScoreSpecimen && claw.atTarget()){
             lift.setState(Lift.States.HighChamber);
-            armOuttake.setState(ArmOuttake.States.ScoreSpecimen, 450);
+            armOuttake.setState(ArmOuttake.States.ScoreSpecimen, 300);
             wristOuttake.setState(WristOuttake.States.ScoreSpecimen);
             goToScoreSpecimen = false;
             finishScoreSpecimen = true;
