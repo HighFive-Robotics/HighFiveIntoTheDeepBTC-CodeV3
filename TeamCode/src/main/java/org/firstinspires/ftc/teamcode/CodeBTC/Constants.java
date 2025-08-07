@@ -116,14 +116,14 @@ public class Constants {
 
         @Config
         public static class Lift {
-            public static PIDCoefficients liftPIDCoefficients_goingUp = new PIDCoefficients(0.004, 0, 0.00001);
+            public static PIDCoefficients liftPIDCoefficients_goingUp = new PIDCoefficients(0.012, 0, 0.00001);
             public static PIDCoefficients liftPIDCoefficients_goingDown = new PIDCoefficients(0.0012, 0, 0.00001);
-            public static double gravityGain = 0.00035;
+            public static double gravityGain = 0.00042;
             public static double maxCurrentDrawn = 5;
 
             @Config
             public static class LiftPositions {
-                public static double liftLowChamber = 0, liftHighChamber = 510, liftHighBasketSpecial = 725;
+                public static double liftLowChamber = 0, liftHighChamber = 525, liftHighBasketSpecial = 725;
                 public static double liftCollect = 0, liftLowBasket = 0, liftHighBasket = 650;
             }
         }

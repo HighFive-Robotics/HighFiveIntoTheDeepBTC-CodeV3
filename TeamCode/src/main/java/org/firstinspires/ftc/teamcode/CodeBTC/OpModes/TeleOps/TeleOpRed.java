@@ -242,7 +242,6 @@ public class TeleOpRed extends LinearOpMode {
                 gamepad1.rumble(250);
             }
 
-            robot.drive.update();
             robot.update();
             telemetry.addData("Target Lift", robot.lift.getTarget());
             telemetry.addData("Lift Pose", robot.lift.getCurrentPosition());

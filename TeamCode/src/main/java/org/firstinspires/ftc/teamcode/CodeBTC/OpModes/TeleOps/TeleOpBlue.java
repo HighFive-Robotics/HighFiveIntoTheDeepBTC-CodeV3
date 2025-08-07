@@ -7,7 +7,9 @@ import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Others.Climb.St
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Others.Climb.States.ResetRight;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Others.Climb.States.ReverseClimb;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Others.Climb.States.Waiting;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Robot.Actions.GoToCollectSpecimen;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Robot.Actions.IntakeGoToTransfer;
+import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Robot.Actions.IntakeGoToTransferSpecimen;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Robot.Actions.OuttakeGoToTransferSample;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Robot.Actions.SpecimenWithIntakeUp;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Core.Robot.Actions.StartCollecting;
@@ -42,6 +44,12 @@ public class TeleOpBlue extends LinearOpMode {
     Pose startPose = new Pose(0,0,0);
     boolean intakeShouldGoToTransferAutomatically = false;
 
+    public enum PlayType{
+        Specimen,
+        Sample,
+        Climb
+    }
+
     public enum CollectType{
         Specific,
         Normal,
@@ -50,6 +58,7 @@ public class TeleOpBlue extends LinearOpMode {
     }
 
     CollectType collectType = CollectType.Normal;
+    PlayType playType = PlayType.Specimen;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,13 +73,31 @@ public class TeleOpBlue extends LinearOpMode {
 
         telemetry.update();
         robot.drive.startTeleopDrive();
+        gamepad1.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
+        gamepad2.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
         waitForStart();
         robot.update();
         while (opModeIsActive()) {
             //Driver 1 Controls
             if (gamepad1.ps) {
-                robot.drive.setStartingPose(robot.drive.getPose());
-                Constants.Globals.isSampleAuto = false;
+               // robot.drive.setStartingPose(robot.drive.getPose());
+              //  Constants.Globals.isSampleAuto = false;
+                robot.localizer.resetIMU();
+            }
+            if(gamepad1.options || gamepad2.options && timerY1.milliseconds() >= 250){
+                if(playType == PlayType.Specimen){
+                    playType = PlayType.Sample;
+                    gamepad1.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
+                    gamepad2.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
+                } else {
+                    playType = PlayType.Specimen;
+                    gamepad1.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
+                    gamepad2.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
+                }
+                timerY1.reset();
+            }
+            if(gamepad1.start){
+                playType = PlayType.Climb;
             }
             robot.drive.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
 
@@ -78,37 +105,129 @@ public class TeleOpBlue extends LinearOpMode {
                 robot.setAction(SpecimenWithIntakeUp);
                 timerA1.reset();
             }
-
-
             if (gamepad1.b && timerB1.milliseconds() >= 250) {
-                robot.setAction(OuttakeGoToTransferSample);
+                robot.setAction(GoToCollectSpecimen);
                 robot.setAction(StartCollectingSpecific);
                 intakeShouldGoToTransferAutomatically = true;
                 timerB1.reset();
             }
 
-            if (gamepad1.left_bumper && timerLeftBumper1.milliseconds() >= 250) {
-                robot.claw.setState(Claw.States.Open);
-                timerLeftBumper1.reset();
-            }
-
-            if (gamepad1.right_bumper && timerRightBumper1.milliseconds() >= 250) {
-                gamepad2.rumble(50);
-                timerRightBumper1.reset();
-            }
-
-            robot.climb.setState(Waiting);
-            if (gamepad1.right_trigger >= 0.7) {
-                robot.climb.setState(Climbing);
-            }
-            if (gamepad1.left_trigger >= 0.7) {
-                robot.climb.setState(ReverseClimb);
-            }
-            if (gamepad1.dpad_left) {
-                robot.climb.setState(ResetLeft);
-            }
-            if (gamepad1.dpad_right) {
-                robot.climb.setState(ResetRight);
+            switch (playType){
+                case Specimen:
+                    if (gamepad1.left_bumper && timerLeftBumper1.milliseconds() >= 250) {
+                        robot.claw.setState(Claw.States.Open);
+                        timerLeftBumper1.reset();
+                    }
+                    if (gamepad1.right_bumper && timerRightBumper1.milliseconds() >= 250) {
+                        gamepad2.rumble(50);
+                        timerRightBumper1.reset();
+                    }
+                    if (gamepad2.a && timerA2.milliseconds() >= 250) {
+                        robot.setAction(IntakeGoToTransferSpecimen);
+                        robot.activeIntake.setState(ActiveIntake.States.Spit);
+                        timerA2.reset();
+                    }
+                    if (gamepad2.x && timerX2.milliseconds() >= 250) {
+                        robot.setAction(IntakeGoToTransferSpecimen);
+                        intakeShouldGoToTransferAutomatically = false;
+                        timerX2.reset();
+                    }
+                    if (gamepad2.b && timerB2.milliseconds() >= 250) {
+                        robot.setAction(GoToCollectSpecimen);
+                        timerB2.reset();
+                    }
+                    robot.climb.setState(Waiting);
+                    if (gamepad1.right_trigger >= 0.7) {
+                        robot.climb.setState(Climbing);
+                    }
+                    if (gamepad1.left_trigger >= 0.7) {
+                        robot.climb.setState(ReverseClimb);
+                    }
+                    if (gamepad1.dpad_left) {
+                        robot.climb.setState(ResetLeft);
+                    }
+                    if (gamepad1.dpad_right) {
+                        robot.climb.setState(ResetRight);
+                    }
+                    break;
+                case Sample:
+                    if (gamepad1.left_bumper && timerLeftBumper1.milliseconds() >= 250) {
+                        robot.claw.setState(Claw.States.Open);
+                        timerLeftBumper1.reset();
+                    }
+                    if (gamepad1.right_bumper && timerRightBumper1.milliseconds() >= 250) {
+                        gamepad2.rumble(50);
+                        timerRightBumper1.reset();
+                    }
+                    if (gamepad2.a && timerA2.milliseconds() >= 250) {
+                        robot.setAction(TransferSample);
+                        timerA2.reset();
+                    }
+                    if (gamepad2.x && timerX2.milliseconds() >= 250) {
+                        robot.setAction(IntakeGoToTransfer);
+                        intakeShouldGoToTransferAutomatically = false;
+                        timerX2.reset();
+                    }
+                    if (gamepad2.b && timerB2.milliseconds() >= 250) {
+                        robot.setAction(OuttakeGoToTransferSample);
+                        timerB2.reset();
+                    }
+                    robot.climb.setState(Waiting);
+                    if (gamepad1.right_trigger >= 0.7) {
+                        robot.climb.setState(Climbing);
+                    }
+                    if (gamepad1.left_trigger >= 0.7) {
+                        robot.climb.setState(ReverseClimb);
+                    }
+                    if (gamepad1.dpad_left) {
+                        robot.climb.setState(ResetLeft);
+                    }
+                    if (gamepad1.dpad_right) {
+                        robot.climb.setState(ResetRight);
+                    }
+                    break;
+                case Climb:
+                    robot.climb.setState(Waiting);
+                    if (gamepad1.right_bumper) {
+                        robot.climb.setState(Climbing);
+                    }
+                    if (gamepad1.left_bumper) {
+                        robot.climb.setState(ReverseClimb);
+                    }
+                    if (gamepad1.left_trigger >= 0.7) {
+                        robot.climb.setState(ResetLeft);
+                    }
+                    if (gamepad1.right_trigger >= 0.7) {
+                        robot.climb.setState(ResetRight);
+                    }
+                    if (gamepad2.a && timerA2.milliseconds() >= 250) {
+                        robot.setAction(IntakeGoToTransferSpecimen);
+                        robot.activeIntake.setState(ActiveIntake.States.Spit);
+                        timerA2.reset();
+                    }
+                    if (gamepad2.x && timerX2.milliseconds() >= 250) {
+                        robot.setAction(IntakeGoToTransferSpecimen);
+                        intakeShouldGoToTransferAutomatically = false;
+                        timerX2.reset();
+                    }
+                    if (gamepad2.b && timerB2.milliseconds() >= 250) {
+                        robot.setAction(GoToCollectSpecimen);
+                        timerB2.reset();
+                    }
+                    robot.climb.setState(Waiting);
+                    if (gamepad1.right_trigger >= 0.7) {
+                        robot.climb.setState(Climbing);
+                    }
+                    if (gamepad1.left_trigger >= 0.7) {
+                        robot.climb.setState(ReverseClimb);
+                    }
+                    if (gamepad1.dpad_left) {
+                        robot.climb.setState(ResetLeft);
+                    }
+                    if (gamepad1.dpad_right) {
+                        robot.climb.setState(ResetRight);
+                    }
+                    break;
             }
 
             if (gamepad1.left_stick_button && gamepad1.right_bumper && timer1.milliseconds() >= 250) {
@@ -120,20 +239,6 @@ public class TeleOpBlue extends LinearOpMode {
                 timer2.reset();
             }
             //Driver 2 Controls
-
-            if (gamepad2.a && timerA2.milliseconds() >= 250) {
-                robot.setAction(TransferSample);
-                timerA2.reset();
-            }
-            if (gamepad2.x && timerX2.milliseconds() >= 250) {
-                robot.setAction(IntakeGoToTransfer);
-                intakeShouldGoToTransferAutomatically = false;
-                timerX2.reset();
-            }
-            if (gamepad2.b && timerB2.milliseconds() >= 250) {
-                robot.setAction(OuttakeGoToTransferSample);
-                timerB2.reset();
-            }
 
             if (gamepad2.left_bumper && timerLeftBumper2.milliseconds() >= 250) {
                 robot.claw.setState(Claw.States.Open);
@@ -236,13 +341,24 @@ public class TeleOpBlue extends LinearOpMode {
             }
 
             //Update
-            if (intakeShouldGoToTransferAutomatically && robot.activeIntake.haveCollected()) {
-                intakeShouldGoToTransferAutomatically = false;
-                robot.setAction(IntakeGoToTransfer);
-                gamepad1.rumble(250);
+            switch (playType){
+                case Sample:
+                    if (intakeShouldGoToTransferAutomatically && robot.activeIntake.haveCollected()) {
+                        intakeShouldGoToTransferAutomatically = false;
+                        robot.setAction(IntakeGoToTransfer);
+                        gamepad1.rumble(250);
+                    }
+                    break;
+                case Specimen:
+                    if (intakeShouldGoToTransferAutomatically && robot.activeIntake.haveCollected()) {
+                        intakeShouldGoToTransferAutomatically = false;
+                        robot.setAction(IntakeGoToTransferSpecimen);
+                        robot.activeIntake.setState(ActiveIntake.States.Wait);
+                        gamepad1.rumble(250);
+                    }
+                    break;
             }
 
-            robot.drive.update();
             robot.update();
             telemetry.addData("Target Lift", robot.lift.getTarget());
             telemetry.addData("Lift Pose", robot.lift.getCurrentPosition());

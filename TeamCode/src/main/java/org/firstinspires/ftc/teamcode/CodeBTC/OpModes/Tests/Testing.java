@@ -36,8 +36,8 @@ public class Testing extends LinearOpMode {
         robot.drive.startTeleopDrive();
         while(opModeInInit())
         {
-            gamepad1.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
-            gamepad2.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
+
+
         }
         waitForStart();
 

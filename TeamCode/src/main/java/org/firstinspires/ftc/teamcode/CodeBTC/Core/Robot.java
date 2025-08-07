@@ -18,6 +18,7 @@ import com.pedropathing.localization.Pose;
 import com.pedropathing.localization.localizers.PinpointLocalizer;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
@@ -39,7 +40,7 @@ import java.util.List;
 public class Robot implements HighModuleSimple {
 
     Telemetry telemetry;
-    PinpointLocalizer localizer;
+    public PinpointLocalizer localizer;
     Led led;
     public ArmOuttake armOuttake;
     public LinkageOuttake linkageOuttake;
@@ -58,9 +59,12 @@ public class Robot implements HighModuleSimple {
 
     boolean isAuto;
 
+    ElapsedTime failSafeTimer = new ElapsedTime();
+
     boolean goToCollectSpecimen = false, finishCollectSpecimen = false, goToScoreSpecimen = false, finishScoreSpecimen = false;
     boolean setOuttakeForTransfer = false, liftGoToCollectSample = false, intakeGoToTransferSample = false, intakeGoToTransferSpecimen = false;
     boolean setIntakeForCollecting1 = false, setIntakeForCollecting2 = false, extendSlidesForCollecting2 = false, setIntakeForCollecting3 = false, setIntakeForCollecting4 = false;
+    boolean shouldMakeTransferSample = false, getOuttakeToScoreSampleTransfer = false, failSafeTransfer = false, finishOuttakeScoreSampleTransfer = false, extendOuttakeTransferSample = false;
 
     public enum Actions {
         GoToCollectSpecimen,
@@ -143,11 +147,11 @@ public class Robot implements HighModuleSimple {
                 setOuttakeForTransfer = true;
             break;
             case IntakeGoToTransfer:
-                slides.setState(LinearSlides.States.Retracted, 200);
+                armIntake.setState(ArmIntake.States.Transfer, 250);
                 intakeGoToTransferSample = true;
                 break;
             case IntakeGoToTransferSpecimen:
-                slides.setState(LinearSlides.States.Retracted, 200);
+                armIntake.setState(ArmIntake.States.Spit, 250);
                 intakeGoToTransferSpecimen = true;
                 break;
             case StartCollecting:
@@ -196,6 +200,11 @@ public class Robot implements HighModuleSimple {
                 }
             }
             break;
+            case TransferSample:
+                claw.setState(Claw.States.ClosedTransfer, 150);
+                activeIntake.setState(ActiveIntake.States.Collect, false);
+                shouldMakeTransferSample = true;
+                break;
         }
     }
 
@@ -252,16 +261,15 @@ public class Robot implements HighModuleSimple {
             lift.setState(Lift.States.Collect);
             liftGoToCollectSample = false;
         }
-        if(intakeGoToTransferSample && slides.atTarget()){
-            armIntake.setState(ArmIntake.States.Transfer);
+        if(intakeGoToTransferSample && armIntake.atTarget()){
             wristIntake.setState(WristIntake.States.Transfer);
+            slides.setState(LinearSlides.States.Retracted);
             activeIntake.setState(ActiveIntake.States.Wait);
             intakeGoToTransferSample = false;
         }
-        if(intakeGoToTransferSpecimen && slides.atTarget()){
-            armIntake.setState(ArmIntake.States.Spit);
+        if(intakeGoToTransferSpecimen && armIntake.atTarget()){
             wristIntake.setState(WristIntake.States.Spit);
-            activeIntake.setState(ActiveIntake.States.Wait);
+            slides.setState(LinearSlides.States.Retracted);
             intakeGoToTransferSpecimen = false;
         }
         if(setIntakeForCollecting1 && slides.atTarget()){
@@ -289,6 +297,35 @@ public class Robot implements HighModuleSimple {
             armIntake.setState(ArmIntake.States.WaitSpecificOne);
             wristIntake.setState(WristIntake.States.WaitCollectSpecificOne);
             setIntakeForCollecting4 = false;
+        }
+
+        if (shouldMakeTransferSample && claw.atTarget()) {
+            activeIntake.setState(ActiveIntake.States.HelpTransfer, false);
+            lift.setState(Lift.States.HighBasket);
+            shouldMakeTransferSample = false;
+            getOuttakeToScoreSampleTransfer = true;
+            failSafeTransfer = true;
+            failSafeTimer.reset();
+        }
+        if (getOuttakeToScoreSampleTransfer && lift.getCurrentPosition() >= 200) {
+            armOuttake.setState(ArmOuttake.States.ScoreSample, 750);
+            wristOuttake.setState(WristOuttake.States.Sample);
+            getOuttakeToScoreSampleTransfer = false;
+            finishOuttakeScoreSampleTransfer = true;
+        }
+        if (failSafeTransfer && failSafeTimer.milliseconds() >= 400) {
+            activeIntake.setState(ActiveIntake.States.Collect, false);
+            failSafeTransfer = false;
+        }
+        if (finishOuttakeScoreSampleTransfer && lift.getCurrentPosition() >= 500) {
+            activeIntake.setState(ActiveIntake.States.Wait);
+            finishOuttakeScoreSampleTransfer = false;
+            failSafeTransfer = false;
+            extendOuttakeTransferSample = true;
+        }
+        if (extendOuttakeTransferSample && lift.getCurrentPosition() >= 500 && armOuttake.atTarget()) {
+            linkageOuttake.setState(LinkageOuttake.States.Extended);
+            extendOuttakeTransferSample = false;
         }
 
         activeIntake.updateColorAndDistance();
