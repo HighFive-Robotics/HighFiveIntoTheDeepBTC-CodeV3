@@ -130,11 +130,11 @@ public class Constants {
 
         @Config
         public static class ArmOuttake {
-            public static double armCollectSpecimenPose = 0.87; //0.15
+            public static double armCollectSpecimenPose = 0.98; //0.87
             public static double armCollectSpecimenSpecialPose = 0; //0.15
             public static double armCollectSpecimenSpecialSpecialPose = 0; //0.12
-            public static double armTransferPose = 0.06; //0.37
-            public static double armScoreSpecimenPose = 0.23; //0.5
+            public static double armTransferPose = 0.03; //0.06
+            public static double armScoreSpecimenPose = 0.20; //0.5
             public static double armScoreSamplePose = 0.6; //0.85
             public static double armInitPose = 0; //0.48
             public static double waitScorePose = 0; //0.02
@@ -152,7 +152,7 @@ public class Constants {
         public static class WristOuttake {
             public static double wristSamplePose = 0.4; //0.6
             public static double wristTransferPose = 0.25; //0.25
-            public static double wristCollectSpecimenPose = 0.35; // 0.15
+            public static double wristCollectSpecimenPose = 0.37; // 0.35
             public static double wristCollectSpecimenSpecialPose = 0.17; // 0.15
             public static double wristCollectSpecimenSpecialSpecialPose = 0; // 0.2
             public static double wristScoreSpecimenPose = 0.25;// 0.25
