@@ -80,9 +80,7 @@ public class TeleOpBlue extends LinearOpMode {
         while (opModeIsActive()) {
             //Driver 1 Controls
             if (gamepad1.ps) {
-               // robot.drive.setStartingPose(robot.drive.getPose());
-              //  Constants.Globals.isSampleAuto = false;
-                robot.localizer.resetIMU();
+                robot.drive.setPose(new Pose(robot.drive.getPose().getX(), robot.drive.getPose().getY(), 0));
             }
             if(gamepad1.options || gamepad2.options && timerY1.milliseconds() >= 250){
                 if(playType == PlayType.Specimen){
@@ -101,11 +99,11 @@ public class TeleOpBlue extends LinearOpMode {
             }
             robot.drive.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
 
-            if (gamepad1.a && timerA1.milliseconds() >= 250) {
+            if (gamepad1.cross && timerA1.milliseconds() >= 250) {
                 robot.setAction(SpecimenWithIntakeUp);
                 timerA1.reset();
             }
-            if (gamepad1.b && timerB1.milliseconds() >= 250) {
+            if (gamepad1.circle && timerB1.milliseconds() >= 250) {
                 robot.setAction(GoToCollectSpecimen);
                 robot.setAction(StartCollectingSpecific);
                 intakeShouldGoToTransferAutomatically = true;
@@ -122,17 +120,17 @@ public class TeleOpBlue extends LinearOpMode {
                         gamepad2.rumble(50);
                         timerRightBumper1.reset();
                     }
-                    if (gamepad2.a && timerA2.milliseconds() >= 250) {
+                    if (gamepad2.cross && timerA2.milliseconds() >= 250) {
                         robot.setAction(IntakeGoToTransferSpecimen);
                         robot.activeIntake.setState(ActiveIntake.States.Spit);
                         timerA2.reset();
                     }
-                    if (gamepad2.x && timerX2.milliseconds() >= 250) {
+                    if (gamepad2.square && timerX2.milliseconds() >= 250) {
                         robot.setAction(IntakeGoToTransferSpecimen);
                         intakeShouldGoToTransferAutomatically = false;
                         timerX2.reset();
                     }
-                    if (gamepad2.b && timerB2.milliseconds() >= 250) {
+                    if (gamepad2.circle && timerB2.milliseconds() >= 250) {
                         robot.setAction(GoToCollectSpecimen);
                         timerB2.reset();
                     }
@@ -159,16 +157,16 @@ public class TeleOpBlue extends LinearOpMode {
                         gamepad2.rumble(50);
                         timerRightBumper1.reset();
                     }
-                    if (gamepad2.a && timerA2.milliseconds() >= 250) {
+                    if (gamepad2.cross && timerA2.milliseconds() >= 250) {
                         robot.setAction(TransferSample);
                         timerA2.reset();
                     }
-                    if (gamepad2.x && timerX2.milliseconds() >= 250) {
+                    if (gamepad2.square && timerX2.milliseconds() >= 250) {
                         robot.setAction(IntakeGoToTransfer);
                         intakeShouldGoToTransferAutomatically = false;
                         timerX2.reset();
                     }
-                    if (gamepad2.b && timerB2.milliseconds() >= 250) {
+                    if (gamepad2.circle && timerB2.milliseconds() >= 250) {
                         robot.setAction(OuttakeGoToTransferSample);
                         timerB2.reset();
                     }
@@ -205,12 +203,12 @@ public class TeleOpBlue extends LinearOpMode {
                         robot.activeIntake.setState(ActiveIntake.States.Spit);
                         timerA2.reset();
                     }
-                    if (gamepad2.x && timerX2.milliseconds() >= 250) {
+                    if (gamepad2.square && timerX2.milliseconds() >= 250) {
                         robot.setAction(IntakeGoToTransferSpecimen);
                         intakeShouldGoToTransferAutomatically = false;
                         timerX2.reset();
                     }
-                    if (gamepad2.b && timerB2.milliseconds() >= 250) {
+                    if (gamepad2.circle && timerB2.milliseconds() >= 250) {
                         robot.setAction(GoToCollectSpecimen);
                         timerB2.reset();
                     }
