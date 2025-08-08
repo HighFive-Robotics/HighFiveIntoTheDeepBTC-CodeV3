@@ -82,7 +82,7 @@ public class TeleOpRed extends LinearOpMode {
             if (gamepad1.ps) {
                 robot.drive.setPose(new Pose(robot.drive.getPose().getX(), robot.drive.getPose().getY(), 0));
             }
-            if(gamepad1.options || gamepad2.options && timerY1.milliseconds() >= 250){
+            if((gamepad1.options || gamepad2.options) && timerY1.milliseconds() >= 250){
                 if(playType == PlayType.Specimen){
                     playType = PlayType.Sample;
                     gamepad1.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);

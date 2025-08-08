@@ -59,7 +59,7 @@ public class HighMotor {
     private boolean useEncoder = false, useZeroPowerBehaviour = true;
     private double target = 0, tolerance = epsilon;
     private double currentPosition = 0, maxPIDPower = 1, kF = 0, initialAngle = 0, ticksPerDegree = 0;
-    private double time;
+    private double time=-1;
 
     /**
      * This constructor can be used for any runMode.
@@ -349,6 +349,7 @@ public class HighMotor {
     public void setPower(double power){
         power = power * multiplier;
         this.power = Range.clip(power, -1.0, 1.0);
+        time = -1;
     }
 
     /**
@@ -790,7 +791,7 @@ public class HighMotor {
                     motor.setPower(power);
                     lastPower = power;
                 }
-                if(timer.milliseconds() >= time && power != 0){
+                if(timer.milliseconds() >= time && power != 0 && time != -1){
                     motor.setPower(0);
                     power = 0;
                 }

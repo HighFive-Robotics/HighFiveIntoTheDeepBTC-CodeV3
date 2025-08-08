@@ -201,7 +201,7 @@ public class Constants {
             public static double slidesExtendedPose = 0.3;
             public static double slidesAuxPose = 0.15;
             public static double slidesAuxAutoPose = 0.2;
-            public static double slidesRetractedPose = 0.0;
+            public static double slidesRetractedPose = 0.08;
             public static double minPose = 0.0;
             public static double maxPose = 0.3;
 

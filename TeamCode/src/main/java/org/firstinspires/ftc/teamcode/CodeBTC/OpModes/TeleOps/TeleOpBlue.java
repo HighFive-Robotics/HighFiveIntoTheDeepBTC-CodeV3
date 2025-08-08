@@ -82,7 +82,7 @@ public class TeleOpBlue extends LinearOpMode {
             if (gamepad1.ps) {
                 robot.drive.setPose(new Pose(robot.drive.getPose().getX(), robot.drive.getPose().getY(), 0));
             }
-            if(gamepad1.options || gamepad2.options && timerY1.milliseconds() >= 250){
+            if((gamepad1.options || gamepad2.options) && timerY1.milliseconds() >= 250){
                 if(playType == PlayType.Specimen){
                     playType = PlayType.Sample;
                     gamepad1.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
@@ -105,7 +105,7 @@ public class TeleOpBlue extends LinearOpMode {
             }
             if (gamepad1.circle && timerB1.milliseconds() >= 250) {
                 robot.setAction(GoToCollectSpecimen);
-                robot.setAction(StartCollectingSpecific);
+                robot.setAction(StartCollectingWithWait);
                 intakeShouldGoToTransferAutomatically = true;
                 timerB1.reset();
             }
@@ -134,18 +134,19 @@ public class TeleOpBlue extends LinearOpMode {
                         robot.setAction(GoToCollectSpecimen);
                         timerB2.reset();
                     }
-                    robot.climb.setState(Waiting);
                     if (gamepad1.right_trigger >= 0.7) {
                         robot.climb.setState(Climbing);
-                    }
+                    } else
                     if (gamepad1.left_trigger >= 0.7) {
                         robot.climb.setState(ReverseClimb);
-                    }
+                    } else
                     if (gamepad1.dpad_left) {
                         robot.climb.setState(ResetLeft);
-                    }
+                    } else
                     if (gamepad1.dpad_right) {
                         robot.climb.setState(ResetRight);
+                    } else {
+                        robot.climb.setState(Waiting);
                     }
                     break;
                 case Sample:
@@ -170,33 +171,35 @@ public class TeleOpBlue extends LinearOpMode {
                         robot.setAction(OuttakeGoToTransferSample);
                         timerB2.reset();
                     }
-                    robot.climb.setState(Waiting);
                     if (gamepad1.right_trigger >= 0.7) {
                         robot.climb.setState(Climbing);
-                    }
+                    } else
                     if (gamepad1.left_trigger >= 0.7) {
                         robot.climb.setState(ReverseClimb);
-                    }
+                    } else
                     if (gamepad1.dpad_left) {
                         robot.climb.setState(ResetLeft);
-                    }
+                    } else
                     if (gamepad1.dpad_right) {
                         robot.climb.setState(ResetRight);
+                    } else {
+                        robot.climb.setState(Waiting);
                     }
                     break;
                 case Climb:
-                    robot.climb.setState(Waiting);
                     if (gamepad1.right_bumper) {
                         robot.climb.setState(Climbing);
-                    }
+                    } else
                     if (gamepad1.left_bumper) {
                         robot.climb.setState(ReverseClimb);
-                    }
+                    } else
                     if (gamepad1.left_trigger >= 0.7) {
                         robot.climb.setState(ResetLeft);
-                    }
+                    } else
                     if (gamepad1.right_trigger >= 0.7) {
                         robot.climb.setState(ResetRight);
+                    } else {
+                        robot.climb.setState(Waiting);
                     }
                     if (gamepad2.a && timerA2.milliseconds() >= 250) {
                         robot.setAction(IntakeGoToTransferSpecimen);
@@ -212,19 +215,7 @@ public class TeleOpBlue extends LinearOpMode {
                         robot.setAction(GoToCollectSpecimen);
                         timerB2.reset();
                     }
-                    robot.climb.setState(Waiting);
-                    if (gamepad1.right_trigger >= 0.7) {
-                        robot.climb.setState(Climbing);
-                    }
-                    if (gamepad1.left_trigger >= 0.7) {
-                        robot.climb.setState(ReverseClimb);
-                    }
-                    if (gamepad1.dpad_left) {
-                        robot.climb.setState(ResetLeft);
-                    }
-                    if (gamepad1.dpad_right) {
-                        robot.climb.setState(ResetRight);
-                    }
+
                     break;
             }
 
@@ -360,13 +351,8 @@ public class TeleOpBlue extends LinearOpMode {
             robot.update();
             telemetry.addData("Target Lift", robot.lift.getTarget());
             telemetry.addData("Lift Pose", robot.lift.getCurrentPosition());
-            telemetry.addData("Arm At Target: ", robot.armOuttake.atTarget());
-            telemetry.addData("Linkage Outtake At Target: ", robot.linkageOuttake.atTarget());
-            telemetry.addData("Wrist Outtake At Target: ", robot.wristOuttake.atTarget());
-            telemetry.addData("Arm Intake At Target: ", robot.armIntake.atTarget());
-            telemetry.addData("Wrist Intake At Target: ", robot.wristIntake.atTarget());
-            telemetry.addData("Linear Slides At Target: ", robot.slides.atTarget());
-            telemetry.addData("Sensor distance: ", robot.activeIntake.intakeSensor.getDistance(DistanceUnit.MM));
+            telemetry.addData("Lift motor power: ", robot.lift.rightLiftMotor.getPower());
+
             telemetry.update();
         }
     }
