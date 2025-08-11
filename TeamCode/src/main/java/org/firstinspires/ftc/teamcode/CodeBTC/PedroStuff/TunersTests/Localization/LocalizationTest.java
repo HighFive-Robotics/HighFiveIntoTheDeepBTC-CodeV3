@@ -9,6 +9,8 @@ import static com.pedropathing.follower.FollowerConstants.leftRearMotorDirection
 import static com.pedropathing.follower.FollowerConstants.rightFrontMotorDirection;
 import static com.pedropathing.follower.FollowerConstants.rightRearMotorDirection;
 
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.LinearSlides.slidesRetractedPose;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -20,6 +22,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
 
 import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.util.DashboardPoseTracker;
@@ -48,6 +51,7 @@ public class LocalizationTest extends OpMode {
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
+    LinearSlides slides;
 
     /**
      * This initializes the PoseUpdater, the mecanum drive motors, and the FTC Dashboard telemetry.
@@ -67,6 +71,7 @@ public class LocalizationTest extends OpMode {
         leftRear.setDirection(leftRearMotorDirection);
         rightFront.setDirection(rightFrontMotorDirection);
         rightRear.setDirection(rightRearMotorDirection);
+        slides = new LinearSlides(hardwareMap, slidesRetractedPose, true);
 
         motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 

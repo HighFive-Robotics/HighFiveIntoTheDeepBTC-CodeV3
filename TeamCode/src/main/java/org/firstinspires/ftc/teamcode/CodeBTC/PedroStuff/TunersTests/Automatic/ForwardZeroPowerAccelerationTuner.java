@@ -9,6 +9,8 @@ import static com.pedropathing.follower.FollowerConstants.leftRearMotorDirection
 import static com.pedropathing.follower.FollowerConstants.rightFrontMotorDirection;
 import static com.pedropathing.follower.FollowerConstants.rightRearMotorDirection;
 
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.LinearSlides.slidesRetractedPose;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -29,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
 
 /**
  * This is the ForwardZeroPowerAccelerationTuner autonomous follower OpMode. This runs the robot
@@ -55,6 +58,7 @@ public class ForwardZeroPowerAccelerationTuner extends OpMode {
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
+    LinearSlides slides;
 
     private PoseUpdater poseUpdater;
 
@@ -85,6 +89,7 @@ com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constan
         leftRear.setDirection(leftRearMotorDirection);
         rightFront.setDirection(rightFrontMotorDirection);
         rightRear.setDirection(rightRearMotorDirection);
+        slides = new LinearSlides(hardwareMap, slidesRetractedPose, true);
 
         motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 

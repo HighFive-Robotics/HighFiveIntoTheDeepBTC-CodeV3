@@ -7,6 +7,8 @@ import com.pedropathing.localization.constants.*;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @SuppressWarnings("All")
 public class Constants {
 
@@ -17,18 +19,15 @@ public class Constants {
 
     public static class LConstants {
         static {
-            ThreeWheelConstants.forwardTicksToInches = .001989436789;
-            ThreeWheelConstants.strafeTicksToInches = .001989436789;
-            ThreeWheelConstants.turnTicksToInches = .001989436789;
-            ThreeWheelConstants.leftY = 1;
-            ThreeWheelConstants.rightY = -1;
-            ThreeWheelConstants.strafeX = -2.5;
-            ThreeWheelConstants.leftEncoder_HardwareMapName = "leftFront";
-            ThreeWheelConstants.rightEncoder_HardwareMapName = "rightRear";
-            ThreeWheelConstants.strafeEncoder_HardwareMapName = "rightFront";
-            ThreeWheelConstants.leftEncoderDirection = Encoder.REVERSE;
-            ThreeWheelConstants.rightEncoderDirection = Encoder.REVERSE;
-            ThreeWheelConstants.strafeEncoderDirection = Encoder.FORWARD;
+            PinpointConstants.forwardY = 30.0;
+            PinpointConstants.strafeX = -5.0;
+            PinpointConstants.distanceUnit = DistanceUnit.MM;
+            PinpointConstants.hardwareMapName = DeviceNames.pinPointName;
+            PinpointConstants.useYawScalar = false;
+            PinpointConstants.useCustomEncoderResolution = false;
+            PinpointConstants.encoderResolution = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD;
+            PinpointConstants.forwardEncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
+            PinpointConstants.strafeEncoderDirection = GoBildaPinpointDriver.EncoderDirection.FORWARD;
         }
     }
 
@@ -50,23 +49,23 @@ public class Constants {
 
             FollowerConstants.mass = 17.1;
 
-            FollowerConstants.xMovement = 77.59;
-            FollowerConstants.yMovement = 58.38;
+            FollowerConstants.xMovement = 77.0218;
+            FollowerConstants.yMovement = 58.1816;
 
-            FollowerConstants.forwardZeroPowerAcceleration = -23.25;
-            FollowerConstants.lateralZeroPowerAcceleration = -67.34;
+            FollowerConstants.forwardZeroPowerAcceleration = -25.1803;
+            FollowerConstants.lateralZeroPowerAcceleration = -69.1504;
 
             FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.17, 0, 0.02, 0);
             FollowerConstants.useSecondaryTranslationalPID = true;
-            FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.15, 0, 0.005, 0); // Not being used, @see useSecondaryTranslationalPID
+            FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.15, 0, 0.015, 0); // Not being used, @see useSecondaryTranslationalPID
 
-            FollowerConstants.headingPIDFCoefficients.setCoefficients(1.8, 0, 0.08, 0);
+            FollowerConstants.headingPIDFCoefficients.setCoefficients(1.8, 0, 0.1, 0);
             FollowerConstants.useSecondaryHeadingPID = true;
-            FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2, 0, 0.08, 0); // Not being used, @see useSecondaryHeadingPID
+            FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(1.5, 0, 0.15, 0); // Not being used, @see useSecondaryHeadingPID
 
-            FollowerConstants.drivePIDFCoefficients.setCoefficients(0.158, 0.0001, 0.0068, 0.6, 0);
+            FollowerConstants.drivePIDFCoefficients.setCoefficients(0.08, 0, 0.001, 0.75, 0);
             FollowerConstants.useSecondaryDrivePID = true;
-            FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.058, 0.0001, 0.0001, 0.6, 0); // Not being used, @see useSecondaryDrivePID
+            FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.005, 0, 0.0001, 0.8, 0); // Not being used, @see useSecondaryDrivePID
 
             FollowerConstants.zeroPowerAccelerationMultiplier = 4;
             FollowerConstants.centripetalScaling = 0.0005;
@@ -76,6 +75,8 @@ public class Constants {
             FollowerConstants.pathEndVelocityConstraint = 0.1;
             FollowerConstants.pathEndTranslationalConstraint = 0.1;
             FollowerConstants.pathEndHeadingConstraint = 0.007;
+            
+            FollowerConstants.useVoltageCompensationInAuto = true;
         }
     }
 
@@ -111,7 +112,6 @@ public class Constants {
         public static String pinPointName = "pinpoint";
     }
 
-    @Config
     public static class Outtake{
 
         @Config
@@ -193,7 +193,6 @@ public class Constants {
         }
     }
 
-    @Config
     public static class Intake {
 
         @Config

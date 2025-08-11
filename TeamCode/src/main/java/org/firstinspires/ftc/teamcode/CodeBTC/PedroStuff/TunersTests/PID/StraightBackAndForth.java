@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.CodeBTC.PedroStuff.TunersTests.PID;
 
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.LinearSlides.slidesRetractedPose;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -13,6 +15,7 @@ import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
 
 /**
  * This is the StraightBackAndForth autonomous OpMode. It runs the robot in a specified distance
@@ -37,6 +40,7 @@ public class StraightBackAndForth extends OpMode {
     private boolean forward = true;
 
     private Follower follower;
+    LinearSlides slides;
 
     private Path forwards;
     private Path backwards;
@@ -53,6 +57,7 @@ public class StraightBackAndForth extends OpMode {
         forwards.setConstantHeadingInterpolation(0);
         backwards = new Path(new BezierLine(new Point(DISTANCE,0, Point.CARTESIAN), new Point(0,0, Point.CARTESIAN)));
         backwards.setConstantHeadingInterpolation(0);
+        slides = new LinearSlides(hardwareMap, slidesRetractedPose, true);
 
         follower.followPath(forwards);
 

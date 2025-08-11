@@ -9,6 +9,8 @@ import static com.pedropathing.follower.FollowerConstants.rightFrontMotorName;
 import static com.pedropathing.follower.FollowerConstants.rightRearMotorDirection;
 import static com.pedropathing.follower.FollowerConstants.rightRearMotorName;
 
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.LinearSlides.slidesRetractedPose;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -23,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
 
 @TeleOp(name = "Motor Directions", group = "Teleop Test")
 public class MotorDirections extends OpMode {
@@ -33,6 +36,7 @@ public class MotorDirections extends OpMode {
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
+    LinearSlides slides;
 
     @Override
     public void init() {
@@ -46,6 +50,7 @@ public class MotorDirections extends OpMode {
         leftRear.setDirection(leftRearMotorDirection);
         rightFront.setDirection(rightFrontMotorDirection);
         rightRear.setDirection(rightRearMotorDirection);
+        slides = new LinearSlides(hardwareMap, slidesRetractedPose, true);
 
         motors = Arrays.asList(leftFront, leftRear, rightFront, rightRear);
 

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.CodeBTC.PedroStuff.TunersTests.Localization;
 
+import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Intake.LinearSlides.slidesRetractedPose;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -12,6 +14,7 @@ import com.pedropathing.util.DashboardPoseTracker;
 import com.pedropathing.util.Drawing;
 
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
 
 /**
  * This is the LateralTuner OpMode. This tracks the strafe movement of the robot and displays the
@@ -31,6 +34,7 @@ import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
 public class LateralTuner extends OpMode {
     private PoseUpdater poseUpdater;
     private DashboardPoseTracker dashboardPoseTracker;
+    LinearSlides slides;
 
     private Telemetry telemetryA;
 
@@ -43,6 +47,7 @@ public class LateralTuner extends OpMode {
     public void init() {
         com.pedropathing.util.Constants.setConstants(Constants.FConstants.class, Constants.LConstants.class);
         poseUpdater = new PoseUpdater(hardwareMap, Constants.FConstants.class, Constants.LConstants.class);
+        slides = new LinearSlides(hardwareMap, slidesRetractedPose, true);
 
         dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
 
