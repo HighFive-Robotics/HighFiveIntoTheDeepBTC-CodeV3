@@ -7,8 +7,6 @@ import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.DeviceNames.armOu
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.ArmOuttakeAnalogInputVoltage.armOuttakeMaxVoltage;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.ArmOuttakeAnalogInputVoltage.armOuttakeMinVoltage;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.armCollectSpecimenPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.armCollectSpecimenSpecialPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.armCollectSpecimenSpecialSpecialPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.armScoreSamplePose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.armScoreSpecimenPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.ArmOuttake.armTransferPose;
@@ -33,8 +31,6 @@ public class ArmOuttake implements HighModule {
 
     public enum States {
         CollectSpecimen,
-        CollectSpecialSpecimen,
-        CollectSpecialSpecialSpecimen,
         Transfer,
         ScoreSpecimen,
         ScoreSample,
@@ -55,14 +51,6 @@ public class ArmOuttake implements HighModule {
             case CollectSpecimen:
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
                 setTarget(armCollectSpecimenPose);
-                break;
-            case CollectSpecialSpecimen:
-                setMotionCoefficients(motionProfileCoefficientsGoingDown);
-                setTarget(armCollectSpecimenSpecialPose);
-                break;
-            case CollectSpecialSpecialSpecimen:
-                setMotionCoefficients(motionProfileCoefficientsGoingDown);
-                setTarget(armCollectSpecimenSpecialSpecialPose);
                 break;
             case Transfer:
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
@@ -90,14 +78,6 @@ public class ArmOuttake implements HighModule {
             case CollectSpecimen:
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);
                 setTarget(armCollectSpecimenPose, time);
-                break;
-            case CollectSpecialSpecimen:
-                setMotionCoefficients(motionProfileCoefficientsGoingDown);
-                setTarget(armCollectSpecimenSpecialPose, time);
-                break;
-            case CollectSpecialSpecialSpecimen:
-                setMotionCoefficients(motionProfileCoefficientsGoingDown);
-                setTarget(armCollectSpecimenSpecialSpecialPose, time);
                 break;
             case Transfer:
                 setMotionCoefficients(motionProfileCoefficientsGoingDown);

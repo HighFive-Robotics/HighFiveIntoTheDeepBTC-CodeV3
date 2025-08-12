@@ -52,8 +52,8 @@ public class Constants {
             FollowerConstants.xMovement = 77.0218;
             FollowerConstants.yMovement = 58.1816;
 
-            FollowerConstants.forwardZeroPowerAcceleration = -25.1803;
-            FollowerConstants.lateralZeroPowerAcceleration = -69.1504;
+            FollowerConstants.forwardZeroPowerAcceleration = -31.406564773247432;
+            FollowerConstants.lateralZeroPowerAcceleration = -74.74618524048017;
 
             FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.17, 0, 0.02, 0);
             FollowerConstants.useSecondaryTranslationalPID = true;
@@ -63,14 +63,16 @@ public class Constants {
             FollowerConstants.useSecondaryHeadingPID = true;
             FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(1.5, 0, 0.15, 0); // Not being used, @see useSecondaryHeadingPID
 
-            FollowerConstants.drivePIDFCoefficients.setCoefficients(0.08, 0, 0.001, 0.75, 0);
+            FollowerConstants.drivePIDFCoefficients.setCoefficients(0.065, 0, 0.0007, 0.6, 0);
+            FollowerConstants.drivePIDFFeedForward = 0.0175;
             FollowerConstants.useSecondaryDrivePID = true;
-            FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.005, 0, 0.0001, 0.8, 0); // Not being used, @see useSecondaryDrivePID
+            FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.0045, 0, 0.00035, 0.6, 0); // Not being used, @see useSecondaryDrivePID
+            FollowerConstants.secondaryDrivePIDFFeedForward  = 0.0175;
 
             FollowerConstants.zeroPowerAccelerationMultiplier = 4;
-            FollowerConstants.centripetalScaling = 0.0005;
+            FollowerConstants.centripetalScaling = 0.0001;
 
-            FollowerConstants.pathEndTimeoutConstraint = 500;
+            FollowerConstants.pathEndTimeoutConstraint = 250;
             FollowerConstants.pathEndTValueConstraint = 0.995;
             FollowerConstants.pathEndVelocityConstraint = 0.1;
             FollowerConstants.pathEndTranslationalConstraint = 0.1;
@@ -131,30 +133,26 @@ public class Constants {
         @Config
         public static class ArmOuttake {
             public static double armCollectSpecimenPose = 0.98; //0.87
-            public static double armCollectSpecimenSpecialPose = 0; //0.15
-            public static double armCollectSpecimenSpecialSpecialPose = 0; //0.12
-            public static double armTransferPose = 0.03; //0.06
+            public static double armTransferPose = 0.05; //0.06
             public static double armScoreSpecimenPose = 0.20; //0.5
             public static double armScoreSamplePose = 0.6; //0.85
             public static double armInitPose = 0; //0.48
             public static double waitScorePose = 0; //0.02
-            public static double minPose = 0; //0.21
-            public static double maxPose = 0; //0.85
+            public static double minPose = 0.05; //0.21
+            public static double maxPose = 0.98; //0.85
 
             @Config
             public static class ArmOuttakeAnalogInputVoltage {
-                public static double armOuttakeMinVoltage = 2.450;
-                public static double armOuttakeMaxVoltage = 0.655;
+                public static double armOuttakeMinVoltage = 0.324;
+                public static double armOuttakeMaxVoltage = 3.131;
             }
         }
 
         @Config
         public static class WristOuttake {
-            public static double wristSamplePose = 0.4; //0.6
+            public static double wristSamplePose = 0.6; //0.6
             public static double wristTransferPose = 0.25; //0.25
             public static double wristCollectSpecimenPose = 0.37; // 0.35
-            public static double wristCollectSpecimenSpecialPose = 0.17; // 0.15
-            public static double wristCollectSpecimenSpecialSpecialPose = 0; // 0.2
             public static double wristScoreSpecimenPose = 0.25;// 0.25
             public static double waitToComeForTransfer = 0.1; //0.1
             public static double wristSampleScoreSpecial = 0; //1

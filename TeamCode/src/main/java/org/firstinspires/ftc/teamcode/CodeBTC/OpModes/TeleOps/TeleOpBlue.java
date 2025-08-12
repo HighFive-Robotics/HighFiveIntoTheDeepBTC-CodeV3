@@ -28,7 +28,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.ActiveIntake;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.ArmIntake;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
+import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.ArmOuttake;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.Claw;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.Lift;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.LinkageOuttake;
@@ -43,6 +45,7 @@ public class TeleOpBlue extends LinearOpMode {
     Robot robot;
     Pose startPose = new Pose(0,0,0);
     boolean intakeShouldGoToTransferAutomatically = false;
+    boolean shouldResetOuttakeSample = false, shouldResetOuttakeSpecimen = false;
 
     public enum PlayType{
         Specimen,
@@ -87,14 +90,18 @@ public class TeleOpBlue extends LinearOpMode {
                     playType = PlayType.Sample;
                     gamepad1.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
                     gamepad2.setLedColor(132 / 255.0, 88 / 255.0, 164 / 255.0, 2147483647);
+                    robot.lift.setTarget(200);
+                    shouldResetOuttakeSample = true;
                 } else {
                     playType = PlayType.Specimen;
                     gamepad1.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
                     gamepad2.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
+                    robot.lift.setTarget(200);
+                    shouldResetOuttakeSpecimen = true;
                 }
                 timerY1.reset();
             }
-            if(gamepad1.start){
+            if(gamepad1.dpad_up){
                 playType = PlayType.Climb;
             }
             robot.drive.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
@@ -348,11 +355,23 @@ public class TeleOpBlue extends LinearOpMode {
                     break;
             }
 
+            if(shouldResetOuttakeSample && robot.lift.atTarget()){
+                robot.setAction(OuttakeGoToTransferSample);
+                shouldResetOuttakeSample = false;
+            }
+            if(shouldResetOuttakeSpecimen && robot.lift.atTarget()){
+                robot.setAction(GoToCollectSpecimen);
+                shouldResetOuttakeSpecimen = false;
+            }
+
             robot.update();
             telemetry.addData("Target Lift", robot.lift.getTarget());
             telemetry.addData("Lift Pose", robot.lift.getCurrentPosition());
             telemetry.addData("Lift motor power: ", robot.lift.rightLiftMotor.getPower());
-
+            telemetry.addData("Voltage ArmOuttake", robot.armOuttake.getVoltage());
+            telemetry.addData("Pose ArmOuttake", robot.armOuttake.getPosition());
+            telemetry.addData("ArmOuttake at target", robot.armOuttake.atTarget());
+            telemetry.addData("ArmOuttake target", robot.armOuttake.getTarget());
             telemetry.update();
         }
     }

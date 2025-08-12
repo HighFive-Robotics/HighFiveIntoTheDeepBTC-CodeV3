@@ -8,8 +8,6 @@ import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOutt
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.minPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.waitToComeForTransfer;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristCollectSpecimenPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristCollectSpecimenSpecialPose;
-import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristCollectSpecimenSpecialSpecialPose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristSamplePose;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristSampleScoreSpecial;
 import static org.firstinspires.ftc.teamcode.CodeBTC.Constants.Outtake.WristOuttake.wristScoreSpecimenPose;
@@ -31,8 +29,6 @@ public class WristOuttake implements HighModule {
 
     public enum States {
         CollectSpecimen,
-        CollectSpecialSpecimen,
-        CollectSpecialSpecialSpecimen,
         ScoreSpecimen,
         Sample,
         Transfer,
@@ -63,12 +59,6 @@ public class WristOuttake implements HighModule {
             case CollectSpecimen:
                 setTarget(wristCollectSpecimenPose);
                 break;
-            case CollectSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialPose);
-                break;
-            case CollectSpecialSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialSpecialPose);
-                break;
             case Sample:
                 setTarget(wristSamplePose);
                 break;
@@ -97,12 +87,6 @@ public class WristOuttake implements HighModule {
         switch (state) {
             case CollectSpecimen:
                 setTarget(wristCollectSpecimenPose, time);
-                break;
-            case CollectSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialPose, time);
-                break;
-            case CollectSpecialSpecialSpecimen:
-                setTarget(wristCollectSpecimenSpecialSpecialPose, time);
                 break;
             case Sample:
                 setTarget(wristSamplePose, time);
