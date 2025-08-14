@@ -25,12 +25,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.ActiveIntake;
-import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.ArmIntake;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
-import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.ArmOuttake;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.Claw;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.Lift;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Outtake.LinkageOuttake;
@@ -73,9 +70,7 @@ public class TeleOpBlue extends LinearOpMode {
         robot = new Robot(hardwareMap, startPose, false, Constants.Color.Blue, telemetry);
 
         telemetry.addLine("OK");
-
         telemetry.update();
-        robot.drive.startTeleopDrive();
         gamepad1.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
         gamepad2.setLedColor(49 / 255.0, 155 / 255.0, 164 / 255.0 , 2147483647);
         waitForStart();
@@ -83,8 +78,10 @@ public class TeleOpBlue extends LinearOpMode {
         while (opModeIsActive()) {
             //Driver 1 Controls
             if (gamepad1.ps) {
-                robot.drive.setPose(new Pose(robot.drive.getPose().getX(), robot.drive.getPose().getY(), 0));
+               robot.localizer.setPose(new Pose(robot.localizer.getPose().getX(), robot.localizer.getPose().getY(), 0));
             }
+            robot.teleOpDrive.driveFieldCentric(gamepad1, robot.localizer.getPose().getHeading());
+
             if((gamepad1.options || gamepad2.options) && timerY1.milliseconds() >= 250){
                 if(playType == PlayType.Specimen){
                     playType = PlayType.Sample;
@@ -104,15 +101,13 @@ public class TeleOpBlue extends LinearOpMode {
             if(gamepad1.dpad_up){
                 playType = PlayType.Climb;
             }
-            robot.drive.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
-
             if (gamepad1.cross && timerA1.milliseconds() >= 250) {
                 robot.setAction(SpecimenWithIntakeUp);
                 timerA1.reset();
             }
             if (gamepad1.circle && timerB1.milliseconds() >= 250) {
                 robot.setAction(GoToCollectSpecimen);
-                robot.setAction(StartCollectingWithWait);
+                robot.setAction(StartCollectingSpecific);
                 intakeShouldGoToTransferAutomatically = true;
                 timerB1.reset();
             }
@@ -371,7 +366,8 @@ public class TeleOpBlue extends LinearOpMode {
             telemetry.addData("Voltage ArmOuttake", robot.armOuttake.getVoltage());
             telemetry.addData("Pose ArmOuttake", robot.armOuttake.getPosition());
             telemetry.addData("ArmOuttake at target", robot.armOuttake.atTarget());
-            telemetry.addData("ArmOuttake target", robot.armOuttake.getTarget());
+            telemetry.addData("Angle", robot.localizer.getPose().getHeading());
+            robot.activeIntake.intakeSensor.telemetry(telemetry);
             telemetry.update();
         }
     }

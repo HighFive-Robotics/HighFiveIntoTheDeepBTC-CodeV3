@@ -15,9 +15,12 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.CodeBTC.Constants;
 import org.firstinspires.ftc.teamcode.CodeBTC.Core.Algorithms.LowPassFilter;
+
+import java.util.Arrays;
 
 //todo rework this please
 @Config
@@ -52,6 +55,7 @@ public class SampleSensor {
             color = Yellow;
         } else if (Math.abs(hsvValues[0] - BlueValues[0]) <= TreshHold[0]) {
             color = Blue;
+
         } else if (Math.abs(hsvValues[0] - RedValues[0]) <= TreshHold[0]) {
             color = Red;
         } else {
@@ -61,6 +65,11 @@ public class SampleSensor {
 
     public Constants.Color getColor() {
         return color;
+    }
+    public void telemetry(Telemetry telemetry){
+        telemetry.addData("Color in RGB", Arrays.toString(this.RGB()));
+        telemetry.addData("Color in HSV" ,Arrays.toString(this.hsvValues));
+        telemetry.addData("Color known", this.getColor());
     }
 
     public double[] RGB() {

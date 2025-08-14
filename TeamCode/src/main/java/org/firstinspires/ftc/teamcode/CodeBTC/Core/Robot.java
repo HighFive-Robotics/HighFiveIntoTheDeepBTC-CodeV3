@@ -54,6 +54,7 @@ public class Robot implements HighModuleSimple {
     public Climb climb;
     public Actions lastAction = Actions.None;
     public Follower drive;
+    public Drive teleOpDrive;
     public List<LynxModule> allHubs;
     protected HardwareMap hardwareMap;
 
@@ -94,12 +95,15 @@ public class Robot implements HighModuleSimple {
             wristOuttake = new WristOuttake(hardwareMap, waitToComeForTransfer, true);
             armIntake = new ArmIntake(hardwareMap, transferPose, true);
             wristIntake = new WristIntake(hardwareMap, wristTransferPose,true);
+            drive = new Follower(hardwareMap,localizer, Constants.FConstants.class, Constants.LConstants.class);
+            drive.setStartingPose(startPose);
         } else {
             claw = new Claw(hardwareMap, clawOpenPose, false);
             armOuttake = new ArmOuttake(hardwareMap, armCollectSpecimenPose, false);
             wristOuttake = new WristOuttake(hardwareMap, wristCollectSpecimenPose, false);
             armIntake = new ArmIntake(hardwareMap, armSpitPose, false);
             wristIntake = new WristIntake(hardwareMap, wristSpitPose,false);
+            teleOpDrive = new Drive(hardwareMap);
         }
         linkageOuttake = new LinkageOuttake(hardwareMap, slidesOuttakeRetractedPose, isAuto);
         activeIntake = new ActiveIntake(hardwareMap,allianceColor);
@@ -107,8 +111,6 @@ public class Robot implements HighModuleSimple {
         climb = new Climb(hardwareMap);
         slides = new LinearSlides(hardwareMap, slidesRetractedPose, isAuto);
         led = new Led(hardwareMap);
-        drive = new Follower(hardwareMap,localizer, Constants.FConstants.class, Constants.LConstants.class);
-        drive.setStartingPose(startPose);
         allHubs = hardwareMap.getAll(LynxModule.class);
         for(LynxModule hub:allHubs){
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -210,21 +212,24 @@ public class Robot implements HighModuleSimple {
 
     @Override
     public void update() {
-
-        if(drive.isLocalizationNAN() && isAuto){
-            activeIntake.intake.setPower(0);
-            lift.motorsSetPower(0);
-            drive.setMaxPower(0);
-            localizer.resetIMU();
-            Pose resetPose = localizer.getPose();
-            localizer = null;
-            localizer = new PinpointLocalizer(hardwareMap , resetPose);
-            drive = null;
-            drive = new Follower(hardwareMap,localizer, Constants.FConstants.class, Constants.LConstants.class);
-            for (LynxModule hub : allHubs) {
-                hub.clearBulkCache();
+        if(isAuto){
+            if(drive.isLocalizationNAN()){
+                activeIntake.intake.setPower(0);
+                lift.motorsSetPower(0);
+                drive.setMaxPower(0);
+                localizer.resetIMU();
+                Pose resetPose = localizer.getPose();
+                localizer = null;
+                localizer = new PinpointLocalizer(hardwareMap , resetPose);
+                drive = null;
+                drive = new Follower(hardwareMap,localizer, Constants.FConstants.class, Constants.LConstants.class);
+                for (LynxModule hub : allHubs) {
+                    hub.clearBulkCache();
+                }
+                return;
             }
-            return;
+        } else {
+            localizer.update();
         }
 
         Constants.Globals.voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
@@ -330,7 +335,9 @@ public class Robot implements HighModuleSimple {
 
         activeIntake.updateColorAndDistance();
         activeIntake.update();
-        drive.update();
+        if(isAuto){
+            drive.update();
+        }
         armOuttake.update();
         lift.update();
         claw.update();
@@ -341,8 +348,15 @@ public class Robot implements HighModuleSimple {
         wristOuttake.update();
         climb.update();
         led.update();
+        if(!isAuto){
+            teleOpDrive.update();
+        }
         for(LynxModule hub:allHubs){
             hub.clearBulkCache();
         }
+    }
+
+    public boolean isDone(){
+        return !drive.isBusy();
     }
 }

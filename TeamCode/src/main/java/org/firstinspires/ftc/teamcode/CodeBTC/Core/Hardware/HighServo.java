@@ -39,7 +39,7 @@ public class HighServo {
     public CRServo CRServo;
     public AnalogInput analogInput;
     private final AsymmetricMotionProfiler motionProfiler = new AsymmetricMotionProfiler(1, 1, 1);
-    private double targetPosition, currentPosition, lastPosition = -1;
+    private double targetPosition, targetPositionMotionProfile, currentPosition, lastPosition = -1;
     private final double epsilon = 1e-5;
     private boolean useAnalogInput = false, atTarget = false;
     private double error = epsilon, voltage, minPosition = 0, maxPosition = 1, minVoltage = 0, maxVoltage = 3.3;
@@ -149,7 +149,8 @@ public class HighServo {
             case MotionProfiler:
                 lastPosition = targetPosition;
                 targetPosition = position;
-                motionProfiler.setMotion(lastPosition, targetPosition);
+                targetPositionMotionProfile = position;
+                motionProfiler.setMotion(lastPosition, targetPositionMotionProfile);
                 break;
             case Standard:
                 targetPosition = position;
@@ -171,7 +172,8 @@ public class HighServo {
         switch (runMode) {
             case MotionProfiler:
                 targetPosition = position;
-                motionProfiler.setMotion(lastPosition, targetPosition);
+                targetPositionMotionProfile = position;
+                motionProfiler.setMotion(lastPosition, targetPositionMotionProfile);
                 break;
             case Standard:
                 targetPosition = Range.clip(position, 0, 1);
@@ -269,11 +271,21 @@ public class HighServo {
      * It also marks if the servo reached the target position if the timer exceeds the allowed time.
      */
     public void update() {
+        if (timer.milliseconds() >= time && time != -1) {
+            atTarget = true;
+            time = -1;
+        } else if (useAnalogInput) {
+            voltage = analogInput.getVoltage();
+            currentPosition = calculatePose(voltage);
+            if (Math.abs(targetPosition - currentPosition) <= error) {
+                atTarget = true;
+            }
+        }
         switch (runMode) {
             case MotionProfiler:
-                targetPosition = motionProfiler.getPosition();
-                servo.setPosition(targetPosition);
-                lastPosition = targetPosition;
+                targetPositionMotionProfile = motionProfiler.getPosition();
+                servo.setPosition(targetPositionMotionProfile);
+                lastPosition = targetPositionMotionProfile;
                 break;
             case Standard:
                 if (Math.abs(targetPosition - lastPosition) >= epsilon) {
@@ -287,17 +299,6 @@ public class HighServo {
                     lastPower = power;
                 }
                 break;
-        }
-        if (useAnalogInput) {
-            voltage = analogInput.getVoltage();
-            currentPosition = calculatePose(voltage);
-            if (Math.abs(targetPosition - currentPosition) <= error) {
-                atTarget = true;
-            }
-        }
-        if (timer.milliseconds() >= time && time != -1) {
-            atTarget = true;
-            time = -1;
         }
     }
 
