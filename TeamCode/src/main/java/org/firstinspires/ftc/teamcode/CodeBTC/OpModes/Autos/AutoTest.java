@@ -101,7 +101,7 @@ public class AutoTest extends LinearOpMode {
                     }
                     break;
                 case 5:
-                    if(robot.drive.atPoint(robot.drive.getPointFromPath(2147483647), 2, 2)){
+                    if(robot.isDone()){
                         robot.drive.followPath(goSpikeMark2, true);
                         pathState = 7;
                     }
