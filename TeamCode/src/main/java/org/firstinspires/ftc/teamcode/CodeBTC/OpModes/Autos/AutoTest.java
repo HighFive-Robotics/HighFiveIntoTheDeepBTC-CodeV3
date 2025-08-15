@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.CodeBTC.OpModes.Autos;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -21,67 +22,55 @@ public class AutoTest extends LinearOpMode {
     int cycles = 0;
 
     public Pose startPose = new Pose(7.5, 64, Math.toRadians(0));
-    private final Pose scorePose = new Pose(32, 78, Math.toRadians(0));
-    private final Pose collectPose = new Pose(6, 30, Math.toRadians(0));
+    private final Pose scorePose = new Pose(34, 72, Math.toRadians(0));
+    private final Pose collectPose = new Pose(9, 30, Math.toRadians(0));
     private final Pose controlPointPose = new Pose(11.5, 32, Math.toRadians(0));
     private final Pose preparePushingPose = new Pose(60, 34, Math.toRadians(0));
     private final Pose pushSamplePose1 = new Pose(60, 24, Math.toRadians(0));
     private final Pose pushSamplePose2 = new Pose(60, 14, Math.toRadians(0));
-    private final Pose pushSamplePose3 = new Pose(60, 6, Math.toRadians(0));
+    private final Pose pushSamplePose3 = new Pose(60, 9, Math.toRadians(0));
     private final Pose observationZonePose1 = new Pose(25, 24, Math.toRadians(0));
     private final Pose observationZonePose2 = new Pose(25, 14, Math.toRadians(0));
     private final Pose observationZonePose3 = new Pose(25, 6, Math.toRadians(0));
 
-    private PathChain scorePreload, scoreSpecimen, crazyBezier, goSpikeMark1, goSpikeMark2, goSpikeMark3, pushSample1, pushSample2, pushSample3, goToCollectSpecimen, collectSpecimen;
+    private  Path scorePreload, scoreSpecimen, crazyBezier, goSpikeMark1, goSpikeMark2, goSpikeMark3, pushSample1, pushSample2, pushSample3, goToCollectSpecimen, collectSpecimen;
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, this.startPose, true, Constants.Color.Blue, telemetry);
 
-        scorePreload = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(startPose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
-                .build();
-        crazyBezier = robot.drive.pathBuilder()
-                .addPath(new BezierCurve(new Point(scorePose), new Point(controlPointPose), new Point(preparePushingPose)))
-                .setLinearHeadingInterpolation(startPose.getHeading(), preparePushingPose.getHeading())
-                .build();
-        goSpikeMark1 = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(preparePushingPose), new Point(pushSamplePose1)))
-                .setLinearHeadingInterpolation(preparePushingPose.getHeading(), pushSamplePose1.getHeading())
-                .build();
-        pushSample1 = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(pushSamplePose1), new Point(observationZonePose1)))
-                .setLinearHeadingInterpolation(pushSamplePose1.getHeading(), observationZonePose1.getHeading())
-                .build();
-        goSpikeMark2 = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(observationZonePose1), new Point(pushSamplePose2)))
-                .setLinearHeadingInterpolation(observationZonePose1.getHeading(), pushSamplePose2.getHeading())
-                .build();
-        pushSample2 = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(pushSamplePose2), new Point(observationZonePose2)))
-                .setLinearHeadingInterpolation(pushSamplePose2.getHeading(), observationZonePose2.getHeading())
-                .build();
-        goSpikeMark3 = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(observationZonePose2), new Point(pushSamplePose3)))
-                .setLinearHeadingInterpolation(observationZonePose2.getHeading(), pushSamplePose3.getHeading())
-                .build();
-        pushSample3 = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(pushSamplePose3), new Point(observationZonePose3)))
-                .setLinearHeadingInterpolation(pushSamplePose3.getHeading(), observationZonePose3.getHeading())
-                .build();
-        goToCollectSpecimen = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(observationZonePose3), new Point(collectPose)))
-                .setLinearHeadingInterpolation(observationZonePose3.getHeading(), collectPose.getHeading())
-                .build();
-        scoreSpecimen = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(collectPose), new Point(scorePose)))
-                .setLinearHeadingInterpolation(collectPose.getHeading(), scorePose.getHeading())
-                .build();
-        collectSpecimen = robot.drive.pathBuilder()
-                .addPath(new BezierLine(new Point(scorePose), new Point(collectPose)))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), collectPose.getHeading())
-                .build();
+        scorePreload = new Path(new BezierLine(new Point(startPose), new Point(scorePose)));
+        scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
+        crazyBezier = 
+                new Path(new BezierCurve(new Point(scorePose), new Point(controlPointPose), new Point(preparePushingPose)));
+                crazyBezier.setLinearHeadingInterpolation(startPose.getHeading(), preparePushingPose.getHeading());
+        goSpikeMark1 = new Path(new BezierLine(new Point(preparePushingPose), new Point(pushSamplePose1)));
+                goSpikeMark1.setLinearHeadingInterpolation(preparePushingPose.getHeading(), pushSamplePose1.getHeading());
+                
+        pushSample1 = new Path(new BezierLine(new Point(pushSamplePose1), new Point(observationZonePose1)));
+                pushSample1.setLinearHeadingInterpolation(pushSamplePose1.getHeading(), observationZonePose1.getHeading());
+                
+        goSpikeMark2 = new Path(new BezierLine(new Point(observationZonePose1), new Point(pushSamplePose2)));
+                goSpikeMark2.setLinearHeadingInterpolation(observationZonePose1.getHeading(), pushSamplePose2.getHeading());
+                
+        pushSample2 = new Path(new BezierLine(new Point(pushSamplePose2), new Point(observationZonePose2)));
+                pushSample2.setLinearHeadingInterpolation(pushSamplePose2.getHeading(), observationZonePose2.getHeading());
+                
+        goSpikeMark3 = new Path(new BezierLine(new Point(observationZonePose2), new Point(pushSamplePose3)));
+                goSpikeMark3.setLinearHeadingInterpolation(observationZonePose2.getHeading(), pushSamplePose3.getHeading());
+                
+        pushSample3 = new Path(new BezierLine(new Point(pushSamplePose3), new Point(observationZonePose3)));
+                pushSample3.setLinearHeadingInterpolation(pushSamplePose3.getHeading(), observationZonePose3.getHeading());
+                
+        goToCollectSpecimen = new Path(new BezierLine(new Point(observationZonePose3), new Point(collectPose)));
+                goToCollectSpecimen.setLinearHeadingInterpolation(observationZonePose3.getHeading(), collectPose.getHeading());
+                
+        scoreSpecimen = new Path(new BezierLine(new Point(collectPose), new Point(scorePose)));
+                scoreSpecimen.setLinearHeadingInterpolation(collectPose.getHeading(), scorePose.getHeading());
+                
+        collectSpecimen = new Path(new BezierLine(new Point(scorePose), new Point(collectPose)));
+                collectSpecimen.setLinearHeadingInterpolation(scorePose.getHeading(), collectPose.getHeading());
+                
 
         waitForStart();
 
@@ -112,7 +101,7 @@ public class AutoTest extends LinearOpMode {
                     }
                     break;
                 case 5:
-                    if(robot.isDone()){
+                    if(robot.drive.atPoint(robot.drive.getPointFromPath(2147483647), 2, 2)){
                         robot.drive.followPath(goSpikeMark2, true);
                         pathState = 7;
                     }
@@ -126,18 +115,6 @@ public class AutoTest extends LinearOpMode {
                 case 8:
                     if(robot.isDone()){
                         robot.drive.followPath(goSpikeMark2, true);
-                        pathState = 9;
-                    }
-                    break;
-                case 9:
-                    if(robot.isDone()){
-                        robot.drive.followPath(pushSample2, true);
-                        pathState = 10;
-                    }
-                    break;
-                case 10:
-                    if(robot.isDone()){
-                        robot.drive.followPath(goSpikeMark3, true);
                         pathState = 11;
                     }
                     break;
@@ -170,6 +147,7 @@ public class AutoTest extends LinearOpMode {
                 case 15:
                     if(robot.isDone()){
                         robot.drive.followPath(collectSpecimen, true);
+                        robot.setAction(Robot.Actions.GoToCollectSpecimen);
                         pathState = 16;
                     }
                     break;

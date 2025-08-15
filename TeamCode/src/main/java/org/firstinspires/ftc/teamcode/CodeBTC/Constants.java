@@ -78,7 +78,7 @@ public class Constants {
             FollowerConstants.pathEndTranslationalConstraint = 0.1;
             FollowerConstants.pathEndHeadingConstraint = 0.007;
             
-            FollowerConstants.useVoltageCompensationInAuto = true;
+            FollowerConstants.useVoltageCompensationInAuto = false;
         }
     }
 

@@ -85,7 +85,6 @@ public class Robot implements HighModuleSimple {
     }
 
     public Robot(HardwareMap hardwareMap, Pose startPose, boolean isAuto, Constants.Color allianceColor, Telemetry telemetry){
-        localizer = new PinpointLocalizer(hardwareMap , startPose);
         this.telemetry = telemetry;
         this.hardwareMap = hardwareMap;
         this.isAuto = isAuto;
@@ -95,9 +94,10 @@ public class Robot implements HighModuleSimple {
             wristOuttake = new WristOuttake(hardwareMap, waitToComeForTransfer, true);
             armIntake = new ArmIntake(hardwareMap, transferPose, true);
             wristIntake = new WristIntake(hardwareMap, wristTransferPose,true);
-            drive = new Follower(hardwareMap,localizer, Constants.FConstants.class, Constants.LConstants.class);
+            drive = new Follower(hardwareMap, Constants.FConstants.class, Constants.LConstants.class);
             drive.setStartingPose(startPose);
         } else {
+            localizer = new PinpointLocalizer(hardwareMap , startPose);
             claw = new Claw(hardwareMap, clawOpenPose, false);
             armOuttake = new ArmOuttake(hardwareMap, armCollectSpecimenPose, false);
             wristOuttake = new WristOuttake(hardwareMap, wristCollectSpecimenPose, false);
@@ -212,27 +212,11 @@ public class Robot implements HighModuleSimple {
 
     @Override
     public void update() {
-        if(isAuto){
-            if(drive.isLocalizationNAN()){
-                activeIntake.intake.setPower(0);
-                lift.motorsSetPower(0);
-                drive.setMaxPower(0);
-                localizer.resetIMU();
-                Pose resetPose = localizer.getPose();
-                localizer = null;
-                localizer = new PinpointLocalizer(hardwareMap , resetPose);
-                drive = null;
-                drive = new Follower(hardwareMap,localizer, Constants.FConstants.class, Constants.LConstants.class);
-                for (LynxModule hub : allHubs) {
-                    hub.clearBulkCache();
-                }
-                return;
-            }
-        } else {
+        Constants.Globals.voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
+
+        if(!isAuto){
             localizer.update();
         }
-
-        Constants.Globals.voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
 
         if(goToCollectSpecimen && linkageOuttake.atTarget() && linkageOuttake.getState() == LinkageOuttake.States.Retracted){
             armOuttake.setState(ArmOuttake.States.CollectSpecimen, 450);
