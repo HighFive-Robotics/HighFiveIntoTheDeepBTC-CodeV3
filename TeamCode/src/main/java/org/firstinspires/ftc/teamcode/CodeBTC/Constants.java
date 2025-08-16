@@ -53,7 +53,7 @@ public class Constants {
             FollowerConstants.yMovement = 58.1816;
 
             FollowerConstants.forwardZeroPowerAcceleration = -26.24865502766564;
-            FollowerConstants.lateralZeroPowerAcceleration = -74.74618524048017;
+            FollowerConstants.lateralZeroPowerAcceleration = -68.1135512386679;
 
             FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.025, 0, 0.025, 0);
             FollowerConstants.useSecondaryTranslationalPID = false;
@@ -70,10 +70,10 @@ public class Constants {
             FollowerConstants.secondaryDrivePIDFFeedForward  = 0.0175;
 
             FollowerConstants.zeroPowerAccelerationMultiplier = 4;
-            FollowerConstants.centripetalScaling = 0.0001;
+            FollowerConstants.centripetalScaling = 0.00025;
 
-            FollowerConstants.pathEndTimeoutConstraint = 50;
-            FollowerConstants.pathEndTValueConstraint = 0.95;
+            FollowerConstants.pathEndTimeoutConstraint = 150;
+            FollowerConstants.pathEndTValueConstraint = 0.99;
             FollowerConstants.pathEndVelocityConstraint = 0.1;
             FollowerConstants.pathEndTranslationalConstraint = 0.1;
             FollowerConstants.pathEndHeadingConstraint = 0.007;
