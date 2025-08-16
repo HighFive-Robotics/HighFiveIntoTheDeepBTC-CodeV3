@@ -26,15 +26,15 @@ public class AutoTest extends LinearOpMode {
     int cycles = 0, i = 0;
 
     public Pose startPose = new Pose(7.5, 64, Math.toRadians(0));
-    private final Pose scorePose = new Pose(32, 68, Math.toRadians(0));
+    private final Pose scorePose = new Pose(36, 66, Math.toRadians(0));
     private final Pose collectPose = new Pose(14, 35, Math.toRadians(0));
     private final Pose controlPointPose = new Pose(11.5, 32, Math.toRadians(0));
     private final Pose preparePushingPose = new Pose(60, 35, Math.toRadians(0));
-    private final Pose pushSamplePose1 = new Pose(60, 24, Math.toRadians(0));
-    private final Pose pushSamplePose2 = new Pose(60, 14, Math.toRadians(0));
+    private final Pose pushSamplePose1 = new Pose(60, 32, Math.toRadians(0));
+    private final Pose pushSamplePose2 = new Pose(60, 22, Math.toRadians(0));
     private final Pose pushSamplePose3 = new Pose(60, 12, Math.toRadians(0));
-    private final Pose observationZonePose1 = new Pose(25, 24, Math.toRadians(0));
-    private final Pose observationZonePose2 = new Pose(25, 18, Math.toRadians(0));
+    private final Pose observationZonePose1 = new Pose(25, 32, Math.toRadians(0));
+    private final Pose observationZonePose2 = new Pose(25, 22, Math.toRadians(0));
     private final Pose observationZonePose3 = new Pose(25, 12, Math.toRadians(0));
 
     @Override

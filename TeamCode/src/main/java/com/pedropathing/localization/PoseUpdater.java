@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import com.pedropathing.localization.localizers.DriveEncoderLocalizer;
-import com.pedropathing.localization.localizers.OTOSLocalizer;
+//import com.pedropathing.localization.localizers.OTOSLocalizer;
 import com.pedropathing.localization.localizers.PinpointLocalizer;
 import com.pedropathing.localization.localizers.ThreeWheelIMULocalizer;
 import com.pedropathing.localization.localizers.ThreeWheelLocalizer;
@@ -125,7 +125,7 @@ public class PoseUpdater {
             case THREE_WHEEL_IMU:
                 return new ThreeWheelIMULocalizer(hardwareMap);
             case OTOS:
-                return new OTOSLocalizer(hardwareMap);
+                // y67return new OTOSLocalizer(hardwareMap);
             case PINPOINT:
                 return new PinpointLocalizer(hardwareMap);
             default:

@@ -77,7 +77,7 @@ import java.util.List;
 public class Follower {
     private HardwareMap hardwareMap;
 
-    private DcMotorEx leftFront;
+    protected DcMotorEx leftFront;
     private DcMotorEx leftRear;
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;

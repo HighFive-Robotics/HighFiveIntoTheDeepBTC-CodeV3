@@ -6,12 +6,10 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
-import com.pedropathing.pathgen.Point;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -32,8 +30,8 @@ import org.firstinspires.ftc.teamcode.CodeBTC.Core.Module.Intake.LinearSlides;
  * @version 1.0, 3/12/2024
  */
 @Config
-@TeleOp(name = "Straight Back And Forth Linear", group = "PIDF Tuning")
-public class StraightBackAndForthTESTLINEAROPMODE extends LinearOpMode {
+@TeleOp(name = "Test Wow", group = "PIDF Tuning")
+public class TestWOW extends LinearOpMode {
     private Telemetry telemetryA;
 
     public static double DISTANCE = 40;
@@ -50,10 +48,10 @@ public class StraightBackAndForthTESTLINEAROPMODE extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         follower = new Follower(hardwareMap, Constants.FConstants.class, Constants.LConstants.class);
 
-        forwards = new Path(new BezierLine(new Point(0, 0, Point.CARTESIAN), new Point(DISTANCE, 0, Point.CARTESIAN)));
-        forwards.setConstantHeadingInterpolation(0);
-        backwards = new Path(new BezierLine(new Point(DISTANCE, 0, Point.CARTESIAN), new Point(0, 0, Point.CARTESIAN)));
-        backwards.setConstantHeadingInterpolation(0);
+        forwards = new Path(new BezierLine(new Pose(0, 0, Math.toRadians(0)), new Pose(35, 10, Math.toRadians(90))));
+        forwards.setLinearHeadingInterpolation(0,  Math.toRadians(90));
+        backwards = new Path(new BezierLine(new Pose(35, 10, Math.toRadians(90)), new Pose(0, 0, Math.toRadians(0))));
+        backwards.setLinearHeadingInterpolation(Math.toRadians(90), 0);
         slides = new LinearSlides(hardwareMap, slidesRetractedPose, true);
 
         follower.followPath(forwards);
