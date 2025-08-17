@@ -86,6 +86,7 @@ public class FollowerConstants {
     /** Global Max Power (can be overridden, just a default)
      *  Default Value: 1 */
     public static double maxPower = 1;
+    public static boolean useHeadingSQUID = false;
 
 
     /** Translational PIDF coefficients (don't use integral)
@@ -130,6 +131,12 @@ public class FollowerConstants {
             0.00001,
             0.6,
             0);
+    public static CustomFilteredPIDFCoefficients driveSQUIDCoefficients = new CustomFilteredPIDFCoefficients(
+            0.075,
+            0,
+            0.00775,
+            0.6,
+            0.001);
 
     /** Feed forward constant added on to the drive PIDF
      *  Default Value: 0.01 */
@@ -240,12 +247,16 @@ public class FollowerConstants {
     /** Use the secondary heading PIDF. It takes over at a certain heading error
      * @see #headingPIDFSwitch
      *  Default Value: false */
-    public static boolean useSecondaryHeadingPID = false;
+    public static boolean useSecondaryHeadingPID = true;
 
     /** Use the secondary drive PIDF. It takes over at a certain drive error
      * @see #drivePIDFSwitch
      *  Default Value: false */
     public static boolean useSecondaryDrivePID = false;
+    /** Makes the default controll loop for the drive correction the FilteredSQUIDController
+     * the PIDF is no longer used
+     * the secondary also becomes a squid*/
+    public static boolean useSquidDrive = false;
 
     /** The limit at which the translational PIDF switches between the main and secondary translational PIDFs,
      * if the secondary PID is active.
@@ -311,7 +322,40 @@ public class FollowerConstants {
             0.000005,
             0.6,
             0);
-
+    public static CustomFilteredPIDFCoefficients secondaryDriveSQUIDCoefficients = new CustomFilteredPIDFCoefficients(
+            0.0085,
+            0,
+            0.0006,
+            0.6,
+            0.0001);
+    public static CustomFilteredPIDFCoefficients headingSquidCoefficients = new CustomFilteredPIDFCoefficients(
+            0.85,
+            0,
+            0.1,
+            0.5,
+            0
+    );
+    public static CustomFilteredPIDFCoefficients secondaryHeadingSquidCoefficients = new CustomFilteredPIDFCoefficients(
+            1,
+            0,
+            0.1,
+            0.5,
+            0
+    );
+    public static CustomFilteredPIDFCoefficients returnDriveSQUID = new CustomFilteredPIDFCoefficients(
+            0.075,
+            0,
+            0.00775,
+            0.6,
+            0.001
+    );
+    public static CustomFilteredPIDFCoefficients returnSecondaryDriveSQUID = new CustomFilteredPIDFCoefficients(
+            0.00865,
+            0,
+            0.0006,
+            0.6,
+            -0.0003
+    );
     /** Feed forward constant added on to the secondary drive PIDF.
      * @see #useSecondaryDrivePID
      *  Default Value: 0.01 */

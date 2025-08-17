@@ -93,6 +93,7 @@ public class LinearSlides implements HighModule {
         }
         target = target + Range.scale(input, -1, 1, -0.008, 0.008);
         target = Range.clip(target, 0, slidesExtendedPose);
+        setTarget(target);
     }
 
     @Override
