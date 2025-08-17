@@ -343,18 +343,18 @@ public class FollowerConstants {
             0
     );
     public static CustomFilteredPIDFCoefficients returnDriveSQUID = new CustomFilteredPIDFCoefficients(
-            0.075,
+            0.2     ,
             0,
-            0.00775,
+            0.08,
             0.6,
-            0.001
+            0
     );
     public static CustomFilteredPIDFCoefficients returnSecondaryDriveSQUID = new CustomFilteredPIDFCoefficients(
-            0.00865,
+            0.0075,
             0,
-            0.0006,
+            0.0001,
             0.6,
-            -0.0003
+            0
     );
     /** Feed forward constant added on to the secondary drive PIDF.
      * @see #useSecondaryDrivePID
@@ -363,7 +363,7 @@ public class FollowerConstants {
 
     /** Use brake mode for the drive motors in teleop
      *  Default Value: false */
-    public static boolean useBrakeModeInTeleOp = false;
+    public static boolean useBrakeModeInTeleOp = true;
 
     /** Boolean that determines if holdEnd is automatically (when not defined in the constructor) enabled at the end of a path.
      *  Default Value: true */

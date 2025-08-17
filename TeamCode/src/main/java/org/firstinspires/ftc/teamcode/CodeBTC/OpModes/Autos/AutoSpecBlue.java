@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.CodeBTC.OpModes.Autos;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
@@ -27,9 +28,9 @@ public class AutoSpecBlue extends LinearOpMode{
     private final Pose scorePose = new Pose(35, 68,0);
     private final Pose collectPose = new Pose(10, 37.5,0);
     private ElapsedTime timer = new ElapsedTime();
-    Pose[] waitCollectSpike = {new Pose(30 , 40 , -1.1) , new Pose(35, 30 , -1.2) , new Pose(32 , 20 , -1)};
-    Pose[] collectSpike = {new Pose(33 , 37 , -1.1) , new Pose(38, 27 , -1.2) , new Pose(35 , 17 , -1)};
-    Pose[] spitPose = {new Pose(38 , 32 , -2.3) , new Pose(38, 27 , -2.3) , new Pose(35 , 17 , -2.3)};
+    Pose[] waitCollectSpike = {new Pose(23.5 , 45 , -0.9) , new Pose(23.5, 40 , -1.1) , new Pose(23.5 , 35 , -1)};
+    Pose[] collectSpike = {new Pose(27 , 48 , -0.9) , new Pose(27, 43 , -1.1) , new Pose(27 , 30 , -1)};
+    Pose[] spitPose = {new Pose(23.5 , 35 , -2.3) , new Pose(38, 27 , -2.3) , new Pose(35 , 17 , -2.3)};
     double[] waitExtendPoses ={0.13 , 0.2 , 0.24};
     double[] extendPoses ={0.18 , 0.25 , 0.3};
     private final Pose controlPointPose = new Pose(11.5, 32, 0);
@@ -55,6 +56,7 @@ public class AutoSpecBlue extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, this.startPose, true, Constants.Color.Blue, telemetry);
+
         pathChain[0] = new Path(scorePreload);
         pathChain[0].setConstantHeadingInterpolation(0);
         pathChain[1] = new Path(goToSpike);
@@ -69,6 +71,12 @@ public class AutoSpecBlue extends LinearOpMode{
         pathChain[5].setConstantHeadingInterpolation(collectSpike[1].getHeading());
         pathChain[6] = new Path(goCollectAndSpit[4]);
         pathChain[6].setLinearHeadingInterpolation(collectSpike[1].getHeading() , spitPose[1].getHeading());
+        pathChain[7] = new Path(goCollectAndSpit[5]);
+        pathChain[7].setLinearHeadingInterpolation(spitPose[1].getHeading() , waitCollectSpike[2].getHeading());
+        pathChain[8] = new Path(goCollectAndSpit[6]);
+        pathChain[8].setConstantHeadingInterpolation(collectSpike[2].getHeading());
+        pathChain[9] = new Path(goCollectAndSpit[2]);
+        pathChain[9].setLinearHeadingInterpolation(collectSpike[2].getHeading() , spitPose[2].getHeading());
         int state = 1;
         waitForStart();
 
@@ -76,12 +84,14 @@ public class AutoSpecBlue extends LinearOpMode{
         while(opModeIsActive()){
             switch (state){
                 case 1:
-                    robot.drive.followPath(pathChain[0]);
+                    robot.drive.followPath(pathChain[0], true);
+                    robot.setAction(Robot.Actions.GoToScoreSpecimen);
                     state++;
                     break;
                 case 2:
                     if(robot.isDone()){
-                        robot.drive.followPath(pathChain[1]);
+                        robot.drive.followPath(pathChain[1], true);
+                        robot.setAction(Robot.Actions.GoToCollectSpecimen);
                         timer.reset();
                         state++;
                     }
@@ -91,20 +101,21 @@ public class AutoSpecBlue extends LinearOpMode{
                         robot.armIntake.setState(ArmIntake.States.Collect);
                         robot.wristIntake.setState(WristIntake.States.Collect);
                         robot.activeIntake.setState(ActiveIntake.States.Collect);
-                        robot.slides.setTarget(extendPoses[0]);
+                        robot.slides.setTarget(waitExtendPoses[0]);
                         state++;
                     }
                     break;
                 case 4:
                     if(robot.isDone()){
-                        robot.drive.followPath(pathChain[2]);
+                        robot.drive.followPath(pathChain[2], true);
+                        robot.slides.setTarget(extendPoses[0]);
                         timer.reset();
                         state++;
                     }
                     break;
                 case 5:
                     if(robot.activeIntake.haveCollected() || timer.milliseconds() > 650){
-                        robot.drive.followPath(pathChain[3]);
+                        robot.drive.followPath(pathChain[3], true);
                         robot.armIntake.setState(ArmIntake.States.WaitSpecificOne);
                         robot.wristIntake.setState(WristIntake.States.WaitCollectSpecificOne);
                         state++;
@@ -116,8 +127,85 @@ public class AutoSpecBlue extends LinearOpMode{
                         state++;
                     }
                     break;
+                case 7:
+                    if(robot.isDone()){
+                        robot.drive.followPath(pathChain[4], true);
+                        timer.reset();
+                        state++;
+                    }
+                    break;
+                case 8:
+                    if(timer.milliseconds() >= 400){
+                        robot.armIntake.setState(ArmIntake.States.Collect);
+                        robot.wristIntake.setState(WristIntake.States.Collect);
+                        robot.activeIntake.setState(ActiveIntake.States.Collect);
+                        robot.slides.setTarget(waitExtendPoses[1]);
+                        state++;
+                    }
+                    break;
+                case 9:
+                    if(robot.isDone()){
+                        robot.drive.followPath(pathChain[5], true);
+                        robot.slides.setTarget(extendPoses[1]);
+                        timer.reset();
+                        state++;
+                    }
+                    break;
+                case 10:
+                    if(robot.activeIntake.haveCollected() || timer.milliseconds() > 650){
+                        robot.drive.followPath(pathChain[6], true);
+                        robot.armIntake.setState(ArmIntake.States.WaitSpecificOne);
+                        robot.wristIntake.setState(WristIntake.States.WaitCollectSpecificOne);
+                        state++;
+                    }
+                    break;
+                case 11:
+                    if(robot.isDone()){
+                        robot.activeIntake.setState(ActiveIntake.States.Spit);
+                        state++;
+                    }
+                    break;
+                case 12:
+                    if(robot.isDone()){
+                        robot.drive.followPath(pathChain[7], true);
+                        timer.reset();
+                        state++;
+                    }
+                    break;
+                case 13:
+                    if(timer.milliseconds() >= 400){
+                        robot.armIntake.setState(ArmIntake.States.Collect);
+                        robot.wristIntake.setState(WristIntake.States.Collect);
+                        robot.activeIntake.setState(ActiveIntake.States.Collect);
+                        robot.slides.setTarget(waitExtendPoses[2]);
+                        state++;
+                    }
+                    break;
+                case 14:
+                    if(robot.isDone()){
+                        robot.drive.followPath(pathChain[8], true);
+                        robot.slides.setTarget(extendPoses[2]);
+                        timer.reset();
+                        state++;
+                    }
+                    break;
+                case 15:
+                    if(robot.activeIntake.haveCollected() || timer.milliseconds() > 650){
+                        robot.drive.followPath(pathChain[9], true);
+                        robot.armIntake.setState(ArmIntake.States.WaitSpecificOne);
+                        robot.wristIntake.setState(WristIntake.States.WaitCollectSpecificOne);
+                        state++;
+                    }
+                    break;
+                case 16:
+                    if(robot.isDone()){
+                        robot.activeIntake.setState(ActiveIntake.States.Spit);
+                        state++;
+                    }
+                    break;
             }
 
+            robot.drive.drawOnDashBoard();
             robot.update();
         }
     }

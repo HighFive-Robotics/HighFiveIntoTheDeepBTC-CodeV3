@@ -260,7 +260,7 @@ public class Follower {
             motor.setMotorType(motorConfigurationType);
         }
 
-        setMotorsToFloat();
+        setMotorsToBrake();
 
         dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
 
@@ -299,7 +299,7 @@ public class Follower {
             motor.setMotorType(motorConfigurationType);
         }
 
-        setMotorsToFloat();
+        setMotorsToBrake();
 
         dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
 
@@ -844,7 +844,7 @@ public class Follower {
      */
     public void breakFollowing() {
         teleopDrive = false;
-        setMotorsToFloat();
+        setMotorsToBrake();
         holdingPosition = false;
         isBusy = false;
         reachedParametricPathEnd = false;

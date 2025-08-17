@@ -64,16 +64,18 @@ public class Constants {
             FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(0, 0, 0, 0); // Not being used, @see useSecondaryHeadingPID
 
             FollowerConstants.drivePIDFCoefficients.setCoefficients(0.01, 0, 0.0001, 0.6, 0);
-            FollowerConstants.driveSQUIDCoefficients.setCoefficients(0.075,0,0.00775,0.6,0.001);
-            FollowerConstants.secondaryDriveSQUIDCoefficients.setCoefficients(0.00885, 0, 0.0006, 0.6 , 0.0001);
+            FollowerConstants.driveSQUIDCoefficients.setCoefficients(0.25,0,0.1,0.6,0);
+            FollowerConstants.secondaryDriveSQUIDCoefficients.setCoefficients(0.002, 0, 0.001, 0.6 , 0);
             FollowerConstants.drivePIDFFeedForward = 0.01;
             FollowerConstants.useSecondaryDrivePID = true;
-            FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.02, 0, 0.001, 0.6, 0); // Not being used, @see useSecondaryDrivePID
+            FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.002, 0, 0.001, 0.6, 0); // Not being used, @see useSecondaryDrivePID
             FollowerConstants.secondaryDrivePIDFFeedForward  = 0.01;
 
 
             FollowerConstants.useSquidDrive = true;
-            FollowerConstants.zeroPowerAccelerationMultiplier = 5.27;
+            FollowerConstants.zeroPowerAccelerationMultiplier = 5.27
+
+            ;
             FollowerConstants.centripetalScaling = 0.0005;
 
             FollowerConstants.pathEndTimeoutConstraint = 250;
