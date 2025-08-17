@@ -22,9 +22,11 @@ import static com.pedropathing.follower.FollowerConstants.secondaryHeadingPIDFFe
 import static com.pedropathing.follower.FollowerConstants.secondaryTranslationalPIDFFeedForward;
 import static com.pedropathing.follower.FollowerConstants.translationalPIDFFeedForward;
 import static com.pedropathing.follower.FollowerConstants.translationalPIDFSwitch;
+import static com.pedropathing.follower.FollowerConstants.useHeadingSQUID;
 import static com.pedropathing.follower.FollowerConstants.useSecondaryDrivePID;
 import static com.pedropathing.follower.FollowerConstants.useSecondaryHeadingPID;
 import static com.pedropathing.follower.FollowerConstants.useSecondaryTranslationalPID;
+import static com.pedropathing.follower.FollowerConstants.useSquidDrive;
 import static com.pedropathing.follower.FollowerConstants.useVoltageCompensationInAuto;
 import static com.pedropathing.follower.FollowerConstants.useVoltageCompensationInTeleOp;
 
@@ -35,6 +37,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.util.Constants;
 import com.pedropathing.util.CustomFilteredPIDFCoefficients;
 import com.pedropathing.util.CustomPIDFCoefficients;
+import com.pedropathing.util.FilteredSQUIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -147,7 +150,10 @@ public class Follower {
     private PIDFController headingPIDF;
     private FilteredPIDFController secondaryDrivePIDF;
     private FilteredPIDFController drivePIDF;
-
+    private FilteredSQUIDController driveSQUID;
+    private FilteredSQUIDController secondaryDriveSQUID;
+    private FilteredSQUIDController headingSQUID;
+    private FilteredSQUIDController secondaryHeadingSQUID;
     private KalmanFilter driveKalmanFilter;
     private double[] driveErrors;
     private double rawDriveError;
@@ -214,8 +220,12 @@ public class Follower {
         translationalIntegral = new PIDFController(FollowerConstants.translationalIntegral);
         secondaryHeadingPIDF = new PIDFController(FollowerConstants.secondaryHeadingPIDFCoefficients);
         headingPIDF = new PIDFController(FollowerConstants.headingPIDFCoefficients);
+        headingSQUID = new FilteredSQUIDController(FollowerConstants.headingSquidCoefficients);
+        secondaryHeadingSQUID = new FilteredSQUIDController(FollowerConstants.secondaryHeadingSquidCoefficients);
         secondaryDrivePIDF = new FilteredPIDFController(FollowerConstants.secondaryDrivePIDFCoefficients);
         drivePIDF = new FilteredPIDFController(FollowerConstants.drivePIDFCoefficients);
+        driveSQUID = new FilteredSQUIDController(FollowerConstants.driveSQUIDCoefficients);
+        secondaryDriveSQUID = new FilteredSQUIDController(FollowerConstants.secondaryDriveSQUIDCoefficients);
         driveKalmanFilter = new KalmanFilter(FollowerConstants.driveKalmanFilterParameters);
         turnHeadingErrorThreshold = FollowerConstants.turnHeadingErrorThreshold;
     }
@@ -905,9 +915,22 @@ public class Follower {
         if (followingPathChain && chainIndex < currentPathChain.size() - 1) {
             return new Vector(driveVectorScaler.getMaxPowerScaling(), currentPath.getClosestPointTangentVector().getTheta());
         }
+        if(useSquidDrive){
+            driveError = getDriveVelocityError();
+            if (Math.abs(driveError) < drivePIDFSwitch && useSecondaryDrivePID) {
+                // Log.d("Follower_logger_secondary::", "In secondary drive PIDF");
+                secondaryDriveSQUID.updateError(driveError);
+                secondaryDriveSQUID.setCoefficients(currentPath.isReversed()?FollowerConstants.returnSecondaryDriveSQUID:FollowerConstants.secondaryDriveSQUIDCoefficients);
+                driveVector = new Vector(MathFunctions.clamp(secondaryDriveSQUID.runSQUID() + secondaryDrivePIDFFeedForward * MathFunctions.getSign(driveError), -driveVectorScaler.getMaxPowerScaling(), driveVectorScaler.getMaxPowerScaling()), currentPath.getClosestPointTangentVector().getTheta());
+                return MathFunctions.copyVector(driveVector);
+            }
 
+            driveSQUID.updateError(driveError);
+            driveSQUID.setCoefficients(currentPath.isReversed()?FollowerConstants.returnDriveSQUID:FollowerConstants.driveSQUIDCoefficients);
+            driveVector = new Vector(MathFunctions.clamp(driveSQUID.runSQUID() + drivePIDFFeedForward * MathFunctions.getSign(driveError), -driveVectorScaler.getMaxPowerScaling(), driveVectorScaler.getMaxPowerScaling()), currentPath.getClosestPointTangentVector().getTheta());
+            return MathFunctions.copyVector(driveVector);
+        }
         driveError = getDriveVelocityError();
-
         if (Math.abs(driveError) < drivePIDFSwitch && useSecondaryDrivePID) {
             // Log.d("Follower_logger_secondary::", "In secondary drive PIDF");
             secondaryDrivePIDF.updateError(driveError);
@@ -983,13 +1006,19 @@ public class Follower {
      */
     public Vector getHeadingVector() {
         if (!useHeading) return new Vector();
+        if(useHeadingSQUID){
+            headingError = MathFunctions.getTurnDirection(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal()) * MathFunctions.getSmallestAngleDifference(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal());
+            if (Math.abs(headingError) < headingPIDFSwitch && useSecondaryHeadingPID) {
+                secondaryHeadingSQUID.updateError(headingError);
+                headingVector = new Vector(MathFunctions.clamp(secondaryHeadingSQUID.runSQUID() + secondaryHeadingPIDFFeedForward * MathFunctions.getTurnDirection(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal()), -driveVectorScaler.getMaxPowerScaling(), driveVectorScaler.getMaxPowerScaling()), poseUpdater.getPose().getHeading());
+                return MathFunctions.copyVector(headingVector);
+            }
+            headingSQUID.updateError(headingError);
+            headingVector = new Vector(MathFunctions.clamp(headingSQUID.runSQUID() + headingPIDFFeedForward * MathFunctions.getTurnDirection(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal()), -driveVectorScaler.getMaxPowerScaling(), driveVectorScaler.getMaxPowerScaling()), poseUpdater.getPose().getHeading());
+            return MathFunctions.copyVector(headingVector);
+        }
         headingError = MathFunctions.getTurnDirection(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal()) * MathFunctions.getSmallestAngleDifference(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal());
         if (Math.abs(headingError) < headingPIDFSwitch && useSecondaryHeadingPID) {
-//            if(logDebug) {
-//                Log.d("Follower_logger", "using secondary heading PIDF controller, error: "
-//                        + String.format("%3.3f", Math.toDegrees(headingError)));
-//
-//            }
             secondaryHeadingPIDF.updateError(headingError);
             headingVector = new Vector(MathFunctions.clamp(secondaryHeadingPIDF.runPIDF() + secondaryHeadingPIDFFeedForward * MathFunctions.getTurnDirection(poseUpdater.getPose().getHeading(), currentPath.getClosestPointHeadingGoal()), -driveVectorScaler.getMaxPowerScaling(), driveVectorScaler.getMaxPowerScaling()), poseUpdater.getPose().getHeading());
             return MathFunctions.copyVector(headingVector);

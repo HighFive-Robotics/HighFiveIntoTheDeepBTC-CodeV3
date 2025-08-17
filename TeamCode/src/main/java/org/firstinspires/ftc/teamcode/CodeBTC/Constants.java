@@ -52,7 +52,7 @@ public class Constants {
             FollowerConstants.xMovement = 88.17177510155643;
             FollowerConstants.yMovement = 59.017156760548474;
 
-            FollowerConstants.forwardZeroPowerAcceleration = -26.24865502766564;
+            FollowerConstants.forwardZeroPowerAcceleration = -29.24865502766564;
             FollowerConstants.lateralZeroPowerAcceleration = -68.1135512386679;//-74.04675206620189
 
             FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.2, 0, 0.025, 0);
@@ -64,20 +64,23 @@ public class Constants {
             FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(0, 0, 0, 0); // Not being used, @see useSecondaryHeadingPID
 
             FollowerConstants.drivePIDFCoefficients.setCoefficients(0.01, 0, 0.0001, 0.6, 0);
+            FollowerConstants.driveSQUIDCoefficients.setCoefficients(0.075,0,0.00775,0.6,0.001);
+            FollowerConstants.secondaryDriveSQUIDCoefficients.setCoefficients(0.00885, 0, 0.0006, 0.6 , 0.0001);
             FollowerConstants.drivePIDFFeedForward = 0.01;
             FollowerConstants.useSecondaryDrivePID = true;
             FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.02, 0, 0.001, 0.6, 0); // Not being used, @see useSecondaryDrivePID
             FollowerConstants.secondaryDrivePIDFFeedForward  = 0.01;
 
-            FollowerConstants.zeroPowerAccelerationMultiplier = 5.5;
+
+            FollowerConstants.useSquidDrive = true;
+            FollowerConstants.zeroPowerAccelerationMultiplier = 5.27;
             FollowerConstants.centripetalScaling = 0.0005;
 
-            FollowerConstants.pathEndTimeoutConstraint = 150;
+            FollowerConstants.pathEndTimeoutConstraint = 250;
             FollowerConstants.pathEndTValueConstraint = 0.99;
             FollowerConstants.pathEndVelocityConstraint = 0.1;
             FollowerConstants.pathEndTranslationalConstraint = 0.1;
             FollowerConstants.pathEndHeadingConstraint = 0.007;
-            
             FollowerConstants.useVoltageCompensationInAuto = true;
         }
     }
